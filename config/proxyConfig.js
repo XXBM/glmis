@@ -1,0 +1,11 @@
+module.exports={
+	proxyList:{
+	   '/glmis/':{
+	        target:"http://localhost:8090/glmis/",
+	        changeOrigin:true,
+	        pathRewrite:{
+	            '^/glmis':""
+	    }
+	    	}
+	}
+}
