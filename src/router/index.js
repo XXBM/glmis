@@ -10,38 +10,73 @@ export default new Router({
     routes: [
     	{
         path: '/personnel',
-        name: '首页',
+        name: '人事信息',
         component: homePage
     	},
     	{
         path: '/tjcx',
-        name: '首页',
+        name: '统计查询',
         component: homePage
     	},
     	{
         path: '/attendanceManager',
-        name: '首页',
+        name: '考勤管理',
         component: homePage
     	},
     	{
         path: '/attendanceQuery',
-        name: '首页',
+        name: '考勤统计',
         component: homePage
     	},
     	{
         path: '/attendanceExportExcel',
-        name: '首页',
+        name: '生成人事处报表',
         component: homePage
     	},
     	{
         path: '/scientificResearch',
-        name: '首页',
+        name: '科研管理',
         component: homePage
     	},
     	{
         path: '/myScientificResearch',
-        name: '首页',
+        name: '我的科研',
         component: homePage
-    	}
+    	},
+        {
+        path: '/academicDegree',
+        name: '学位维护',
+        component: homePage
+        },
+        {
+        path: '/educationQualification',
+        name: '学历维护',
+        component: homePage
+        },
+        {
+        path: '/post',
+        name: '职务维护',
+        component: homePage
+        },
+        {
+        path: '/professionalTitle',
+        name: '职称维护',
+        component: homePage
+        },
+        {
+        path: '/practisingCertification',
+        name: '证书维护',
+        component: homePage
+        },
+        {
+        path: '/organization',
+        name: '机构维护',
+        component: homePage
+        },
+        {
+        path: '/leaveManager',
+        name: '请假管理',
+        component: homePage
+        }
     ]
 })
