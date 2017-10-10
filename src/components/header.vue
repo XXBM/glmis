@@ -24,11 +24,11 @@ export default{
       findUser() {
         //初始显示表格用的查询数据
         //当前多少页 一页多少条
-        // this.$http.get(this.HOST + "/userInfo").then(response => {
-        //   this.currentUser = response.data.userType;
-        // }).catch(error => {
+        this.$http.get(this.HOST + "/userInfo").then(response => {
+          this.currentUser = response.data.userName;
+        }).catch(error => {
           
-        // })
+        })
       },
       logout() {
         //初始显示表格用的查询数据
