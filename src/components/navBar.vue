@@ -1,11 +1,24 @@
 <template>
 <div id="navBar">
-    <el-menu default-active="1-4-1" class="el-menu-vertical-demo" theme="light" :router=true>
-    <template slot="title"></template> 
-    <div v-for="item in menuData">
-    <el-menu-item :index="item.url" style="text-align: left;" class="menuItem"><i :class="item.icon"></i>{{item.text}}</el-menu-item>
-    </div>
-    </el-menu>
+      <el-menu unique-opened router v-show="!collapsed">
+            <!--动态路由到子组件 将不可见的路径隐藏-->
+          <template v-for="(item,index) in menuData">
+    
+            <el-submenu :index="index+''">
+              <!--用el ui 的title进行solt分发菜单-->
+              <template slot="title"><i :class="item.icon"></i>{{item.text}}</template>
+                <!--item.name和item.children.name来配置菜单栏和子菜单栏的名称-->
+                    <el-submenu v-for="child in item.children" :key="child.url" :index="child.id">
+                      <!--用el ui 的title进行solt分发菜单-->
+                      <template slot="title"><i :class="child.icon"></i>{{child.text}}</template>
+                        <!--item.name和item.children.name来配置菜单栏和子菜单栏的名称-->
+
+                        <el-menu-item v-for="yes in child.children" :index="yes.url" :key="yes.url"><i :class="yes.icon"></i>{{yes.text}}</el-menu-item>
+                    </el-submenu>
+            </el-submenu>
+          </template>
+        </el-menu>
+ 
 </div>
 </template>
 <script>

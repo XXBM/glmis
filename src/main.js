@@ -19,7 +19,7 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 
-Vue.prototype.HOST = '/absmis'
+Vue.prototype.HOST = '/glmis'
 
 /* eslint-disable no-new */
 new Vue({
