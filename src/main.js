@@ -6,7 +6,6 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import axios from 'axios'
-import moment from 'moment'
 
 
 
@@ -14,7 +13,6 @@ import moment from 'moment'
 axios.defaults.withCredentials=true
 
 Vue.prototype.$http = axios
-Vue.prototype.moment = moment
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
