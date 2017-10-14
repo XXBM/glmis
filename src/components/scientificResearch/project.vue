@@ -170,14 +170,16 @@ import msgDialog from '../common/msgDialog'
 				// 初始时，拒绝审核对话框的显示
 				showCheckingStatusDialog:false,
 				// 用于保存当前行的信息
-				currentRow:''
+				currentRow:'',
+				// 判断是否有选中的行
+				projectId:''
 
 
 
 			}
 		},
 		// 获取父组件传递来的数值
-		props:['url','workerId'],
+		props:['url'],
 		// 用于监控，当。。。变化时，执行。。。
 		watch:{
 			url:function(){
@@ -247,9 +249,10 @@ import msgDialog from '../common/msgDialog'
 			getCurrentRow(currentRow){
 				this.currentRow = currentRow
 				this.checkingStatusId=this.currentRow.checkingStatus.id
+				this.projectId = this.currentRow.id
 			},
 			checking(){
-				if(this.workerId==''){
+				if(this.projectId==''){
 					this.$refs.msgDialog.confirm("请先选择一行")
 				}else
 					this.showCheckingStatusDialog=true
