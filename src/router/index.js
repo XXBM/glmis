@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 //For router-use
 import homePage from '../components/homePage.vue'
-
+import scientificInfo from '../components/scientificResearch/scientificInformation'
 Vue.use(Router)
 
 export default new Router({
@@ -36,7 +36,7 @@ export default new Router({
     	{
         path: '/scientificResearch',
         name: '科研管理',
-        component: homePage
+        component: scientificInfo
     	},
     	{
         path: '/myScientificResearch',
