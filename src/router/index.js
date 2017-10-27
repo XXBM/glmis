@@ -5,6 +5,7 @@ import Router from 'vue-router'
 import homePage from '../components/homePage.vue'
 import scientificInfo from '../components/scientificResearch/scientificInformation'
 import attendanceManager from '../components/attendance/attendanceManager/attendanceManager'
+import myScientificResearch from '../components/employee/scientificResearch/myScientificResearch'
 Vue.use(Router)
 
 export default new Router({
@@ -42,7 +43,7 @@ export default new Router({
     	{
         path: '/myScientificResearch',
         name: '我的科研',
-        component: homePage
+        component: myScientificResearch
     	},
         {
         path: '/academicDegree',
