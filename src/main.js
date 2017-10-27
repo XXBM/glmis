@@ -9,7 +9,7 @@ import axios from 'axios'
 import moment from 'moment'
 
 
-
+//继承cookie信息
 axios.defaults.withCredentials=true
 Vue.prototype.moment = moment
 Vue.prototype.$http = axios

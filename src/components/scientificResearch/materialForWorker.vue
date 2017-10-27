@@ -1,7 +1,7 @@
 <template>
 	<el-tabs type="card" @tab-click="handleClick">
     <el-tab-pane label="项目(横向)" name="project">
-    	<project :url="projectUrl" :workerId="workerId"></project>
+    	<project-lengthways :url="projectUrl" :workerId="workerId"></project-lengthways>
     </el-tab-pane>
     <el-tab-pane label="项目(纵向)" name="lengthways">
     	<project :url="lengthwaysUrl" :workerId="workerId"></project>
@@ -14,6 +14,7 @@
 </template>
 <script>
 import project from './project'
+import projectLengthways from './projectLengthways'
 	export default{
 		data(){
 			return{
@@ -31,14 +32,15 @@ import project from './project'
 		methods:{
 			handleClick(tab){
 				if(tab.name=="project"){
-					
+					this.projectUrl="/displayProjectFundedByPrivateSectorByEmp?id="+this.materialForWorker
 				}else if(tab.name=="lengthways"){
 					this.lengthwaysUrl="/displayProjectFundedByGovernmentByEmp?id="+this.materialForWorker
 				}
 			}
 		},
 		components:{
-			project
+			project,
+			projectLengthways
 		}
 	}
 </script>
