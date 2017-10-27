@@ -16,6 +16,7 @@
 			return{
 				thesisUrl:'',
 				awardUrl:'',
+				monographUrl:'',
 			}
 		},
 		methods:{
@@ -25,7 +26,7 @@
 				}else if(tab.name==award){
 					this.awardUrl="/"
 				}else if(tab.name==monograph){
-
+					this.monographUrl="/"
 				}else if(tab.name==teachingMaterial){
 
 				}else if(tab.name==infeedProject){
