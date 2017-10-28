@@ -1,18 +1,18 @@
 <template>
     <div id="indexContent">
-        <div class="header">
+        <el-row class="header">
             <!-- Header Part -->
             <index-header></index-header>
-        </div>   
+        </el-row>  
         <!-- Row for the main index part-->
-        <div class="main">
+        <el-row class="main">
             <!-- Left for the navigation bar -->
-            <div id="navBar" class="menu">
+            <el-col id="navBar" class="menu" :span="5">
                 <nav-bar></nav-bar>
-            </div>
+            </el-col>
             <!-- Right part for the view offerred by the router,
                      with the transition effects-->
-            <div class="content">
+            <el-col class="content" :span="19">
                 <el-row class="viewHeader">
                     <view-header></view-header>
                 </el-row>
@@ -21,13 +21,8 @@
                         <router-view></router-view>
                     </transition>
                 </el-row>
-            </div>
-        </div>
-        <!--Footer Part
-            The push div used to prevent overlaping when the content is full-->
-        <div class="footer">
-            <index-footer></index-footer>
-        </div>
+            </el-col>
+        </el-row>
     </div>    
 </template>
 
@@ -57,21 +52,21 @@ export default {
 <style>
 html,body{
     height:100%;
-    margin:0;
-    padding:0;
+/*    margin:0;
+    padding:0;*/
 }
 
 .el-row {
-    margin-right: 0;
-    margin-bottom: 20px;
-    &:last-child {
+/*    margin-right: 0;
+    margin-bottom: 20px;*/
+/*    &:last-child {
         margin-bottom: 0;
-    }
+    }*/
 }
-.el-col {
+/*.el-col {
     border-radius: 4px;
-}
-.bg-purple-dark {
+}*/
+/*.bg-purple-dark {
     background: #99a9bf;
 }
 .bg-purple {
@@ -87,8 +82,8 @@ html,body{
 .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
-}
-#indexContent {
+}*/
+/* #indexContent {
     overflow-x: hidden;
      
 }
@@ -105,7 +100,7 @@ html,body{
     width:100%;
     overflow:auto;
     height: 85%;
-   /* top:60px;*/
+   top:60px;
     bottom: 30px;
     position:fixed;
     background-color: #F9FAFC; 
@@ -119,9 +114,9 @@ html,body{
     background-color:#E5E9F2;
 }
 .content{
-    /*margin-left: 310px;*/
-   /* overflow-y: auto;
-    scroll-behavior: auto;*/
+    margin-left: 310px;
+    overflow-y: auto;
+    scroll-behavior: auto;
     width: 80%;
     float: right;
     background-color: #F9FAFC; 
@@ -136,5 +131,5 @@ html,body{
     position:fixed;
     bottom: 0px;
     left: 0px;
-}
+} */
 </style>
