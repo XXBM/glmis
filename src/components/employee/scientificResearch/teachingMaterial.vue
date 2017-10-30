@@ -52,9 +52,17 @@
 		      		label="审核状态">
 		      	</el-table-column>
 			</el-table>
+			<el-pagination
+			      @size-change="handleSizeChange"
+			      @current-change="handleCurrentChange"
+			      :page-sizes="[10, 15, 20, 25]"
+			      :page-size="rows"
+			      layout="total, sizes, prev, pager, next, jumper"
+			      :total="tableDataTotal">
+			</el-pagination>
 		</el-row>
 		<el-dialog title="增加" v-model="showAddDialog">
-			<el-form v-model="addData">
+			<el-form :model="addData" :rules="rules" ref="ruleAdd">
 				<el-form-item
 					prop="name"
 		      		label="名称">
@@ -84,7 +92,7 @@
 		      	<el-form-item
 					prop="words"
 		      		label="千字数">
-		      		<el-input v-model="addData.press" type='number'></el-input>
+		      		<el-input v-model="addData.words" type='number'></el-input>
 		     	</el-form-item>
 		      	<el-form-item
 					prop="textbookRank.description"
@@ -115,12 +123,77 @@
 		      	</el-form-item>
 			</el-form>
 			<el-button @click="cancelAdd">取消</el-button>
-			<el-button @click="saveAdd">提交</el-button>
+			<el-button @click="saveAdd('ruleAdd')">提交</el-button>
+		</el-dialog>
+		<el-dialog title="修改" v-model="showEditDialog">
+			<el-form :model="editData" :rules="rules" ref="ruleEdit">
+				<el-form-item
+					prop="name"
+		      		label="名称">
+		      		<el-input v-model="editData.name"></el-input>
+		     	</el-form-item>
+		      	<el-form-item
+					prop="editor"
+		      		label="负责人">
+		      		<el-input v-model="editData.editor"></el-input>
+		      	</el-form-item>
+		      	<el-form-item
+					prop="press"
+		      		label="出版社">
+		      		<el-input v-model="editData.press"></el-input>
+		     	</el-form-item>
+		      	<el-form-item
+					prop="publicationTime"
+		      		label="出版时间">
+		      		<el-date-picker
+				      v-model="editData.publicationTime"
+				      align="right"
+				      type="date"
+				      placeholder="选择日期"
+				      :picker-options="pickerOptions1">
+				    </el-date-picker>
+		      	</el-form-item>
+		      	<el-form-item
+					prop="words"
+		      		label="千字数">
+		      		<el-input v-model="editData.words" type='number'></el-input>
+		     	</el-form-item>
+		      	<el-form-item
+					prop="textbookRank.description"
+		      		label="级别">
+		      		<el-select v-model="editData.textbookRank" placeholder="请选择">
+					    <el-option
+					      v-for="item in textbookRanks"
+					      :key="item.id"
+					      :label="item.description"
+					      :value="item.id">
+					    </el-option>
+					</el-select>
+		      	</el-form-item>
+		      	<el-form-item
+					prop="isbn"
+		      		label="ISBN">
+		      		<el-input v-model="editData.isbn"></el-input>
+		      	</el-form-item>
+		      	<el-form-item
+					prop="seating"
+		      		label="本人位次">
+		      		<el-input v-model="editData.seating" type='number'></el-input>
+		      	</el-form-item>
+		      	<el-form-item
+					prop="numOfParticipants"
+		      		label="作者人数">
+		      		<el-input v-model="editData.numOfParticipants"type='number'></el-input>
+		      	</el-form-item>
+			</el-form>
+			<el-button @click="cancelEdit">取消</el-button>
+			<el-button @click="saveEdit('ruleEdit')">提交</el-button>
 		</el-dialog>
 		<msg-dialog ref="msgDialog"></msg-dialog>
 	</div>
 </template>
 <script type="text/javascript">
+import moment from 'moment'
 import msgDialog from '../../../components/common/msgDialog.vue'
 	export default{
 		data(){
@@ -128,10 +201,35 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 				tableData:'',
 				textbookRanks:'',
 				currentPage:1,
-				total:10,
+				rows:10,
+				tableDataTotal:'',
 				showAddDialog:false,
 				showEditDialog:false,
-				addData:'',
+				currentRow:'',
+				currentRowId:'',
+				addData:{
+					name:'',		     	
+					editor:'',
+					press:'',
+					publicationTime:'',
+					words:'',
+					textbookRank:'',
+					isbn:'',	      	
+					seating:'',
+					numOfParticipants:''
+				},
+				editData:{
+					id:'',
+					name:'',		     	
+					editor:'',
+					press:'',
+					publicationTime:'',
+					words:'',
+					textbookRank:'',
+					isbn:'',	      	
+					seating:'',
+					numOfParticipants:''
+				},
 				pickerOptions1: {
 		          	//快捷键
 		         	shortcuts: [{
@@ -155,6 +253,15 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 		            	}
 		          	}]
 		        },
+		        rules:{
+		          name: [{ required: true, message: '必填项', trigger: 'blur'&'change'  }],
+		          editor: [{ required: true, message: '必填项', trigger: 'blur'&'change'  }],
+		          press:[{ required: true, message: '必填项', trigger: 'blur'&'change'}],
+		          words:[{required: true, message: '必填项', trigger: 'blur'&'change'  }],
+		          isbn:[{required: true, message: '必填项', trigger: 'blur'&'change' }],
+		          seating:[{required: true, message: '必填项', trigger: 'blur'&'change' }],
+		          numOfParticipants:[{required: true, message: '必填项', trigger: 'blur'&'change'  }],
+		        }
 			}
 		},
 		created:function(){
@@ -162,10 +269,10 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 		},
 		methods:{
 			getAllTableData:function(){
-				var url=this.HOST+'/displayTextbook?page='+this.currentPage+'&rows='+this.total
+				var url=this.HOST+'/displayTextbook?page='+this.currentPage+'&rows='+this.rows
 				this.$http.get(url).then(response=>{
 					this.tableData=response.data.rows
-					this.total=response.data.total
+					this.tableDataTotal=response.data.total
 				}).catch(response=>{
 					this.$refs.msgDialog.confirm("获取所有教材信息失败!")
 				})
@@ -178,18 +285,109 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 					this.$refs.msgDialog.confirm("获取所有教材级别失败！")
 				})
 			},
-			handleRowClick:function(){
-
+			handleRowClick:function(value){
+				this.currentRow=value
+				this.currentRowId=value.id
+			},
+			handleSizeChange:function(val){
+				this.rows=val
+				this.getAllTableData()
+			},
+			handleCurrentChange:function(val){
+				this.currentPage=val
+				this.getAllTableData()
 			},
 			add:function(){
 				this.showAddDialog=true
 				this.getAlltextbookRank()
 			},
+			saveAdd:function(ruleForm){
+				this.$refs[ruleForm].validate((valid)=>{
+					if (valid) {
+						var url = this.HOST+'/addTextbook'
+						var time =this.addData.publicationTime
+						this.addData.publicationTime=moment(time).format("YYYY-MM-DD")
+						this.$http.post(url,this.addData).then(response=>{
+							this.getAllTableData()
+							this.showAddDialog=false
+							this.$refs.msgDialog.notify("成功添加教科书！")
+						}).catch(response=>{
+							this.refs.msgDialog.confirm("添加教科书失败！")
+						})
+					}else{
+						this.$refs.msgDialog.confirm("请检查填写的信息！")
+					}
+				})
+				
+			},
 			edit:function(){
+				if (this.currentRowId=='') {
+					this.$refs.msgDialog.confirm("请选择要修改的行！")
+				}else{
+					this.showEditDialog=true
+					this.getAlltextbookRank()
+					this.editData.id=this.currentRow.id
+					this.editData.name=this.currentRow.name			     	
+					this.editData.editor=this.currentRow.editor,
+					this.editData.press=this.currentRow.press,
+					this.editData.publicationTime=this.currentRow.publicationTime
+					this.editData.words=this.currentRow.words
+					this.editData.textbookRank=this.currentRow.textbookRank
+					this.editData.isbn=this.currentRow.isbn
+					this.editData.seating=this.currentRow.seating
+					this.editData.numOfParticipants=this.currentRow.numOfParticipants
+				}
+			},
+			saveEdit:function(ruleForm){
+				this.$refs[ruleForm].validate((valid)=>{
+					if (valid) {
+						var url=this.HOST+'/updateTextbook'
+						var time =this.editData.publicationTime
 
+						this.editData.publicationTime=moment(time).format("YYYY-MM-DD")
+						this.currentRow.id=this.editData.id
+						this.currentRow.name=this.editData.name		     	
+						this.currentRow.editor=this.editData.editor
+						this.currentRow.press=this.editData.press
+						this.currentRow.publicationTime=this.editData.publicationTime
+						this.currentRow.words=this.editData.words
+						this.currentRow.textbookRank=this.editData.textbookRank
+						this.currentRow.isbn=this.editData.isbn
+						this.currentRow.seating=this.editData.seating
+						this.currentRow.numOfParticipants=this.editData.numOfParticipants
+						this.$http.put(url,this.currentRow).then(response=>{
+							this.getAllTableData()
+							this.$refs.msgDialog.notify("修改教材信息成功！")
+							this.showEditDialog=false
+						}).catch(response=>{
+							this.$refs.msgDialog.confirm("修改教材信息失败！")
+						})
+					}else{
+						this.$refs.msgDialog.confirm("请检查填写的信息！")
+					}
+				})
+				
 			},
 			remove:function(){
-
+				if (this.currentRowId=='') {
+					this.$refs.msgDialog.confirm("请选择要删除的行！")
+				}else{
+					this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+				          confirmButtonText: '确定',
+				          cancelButtonText: '取消',
+				          type: 'warning'
+				        }).then(() => {
+				          var url =this.HOST+'/deleteTextbook?ids='+this.currentRowId
+				          this.$http.delete(url).then(response=>{
+				          	this.getAllTableData()
+				          	this.$refs.msgDialog.notify("成功删除一条数据!")
+				          }).catch(response=>{
+				          	this.$refs.msgDialog.notify("删除失败！")
+				          })
+				        }).catch(() => {
+				          	this.$refs.msgDialog.notify("已取消删除！")       
+			    	})
+				}		
 			},
 		},
 		components:{
