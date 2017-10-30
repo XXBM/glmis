@@ -219,7 +219,7 @@ import msgDialog from '../common/msgDialog'
 			// 保存修改的审核信息
 			saveCheckStatus(){
 				this.currentRow.checkingStatus.id=this.checkingStatusId
-				var url = this.HOST + '/updateProjectFundedByGovernment'
+				var url = this.HOST + '/updateProjectFundedByPrivateSector'
 				this.$http.put(url,this.currentRow).then(response=>{
 					this.$refs.msgDialog.notify("修改成功")
 					this.handleCurrentChange()

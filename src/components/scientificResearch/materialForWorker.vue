@@ -15,12 +15,16 @@
 <script>
 import project from './project'
 import projectLengthways from './projectLengthways'
+import textBook from './textBook'
+import monograph from './monograph'
+import award from './award'
+import thesis from './thesis'
 	export default{
 		data(){
 			return{
 				projectUrl:'',
 				lengthwaysUrl:'',
-				workerId:''
+				workerId:'',
 			}
 		},
 		props:['materialForWorker'],
@@ -35,12 +39,24 @@ import projectLengthways from './projectLengthways'
 					this.projectUrl="/displayProjectFundedByPrivateSectorByEmp?id="+this.materialForWorker
 				}else if(tab.name=="lengthways"){
 					this.lengthwaysUrl="/displayProjectFundedByGovernmentByEmp?id="+this.materialForWorker
+				}else if(tab.name=="论文"){
+
+				}else if(tab.name=="获奖"){
+
+				}else if(tab.name=="教材"){
+
+				}else{
+
 				}
 			}
 		},
 		components:{
 			project,
-			projectLengthways
+			projectLengthways,
+			textBook,
+			monograph,
+			award,
+			thesis
 		}
 	}
 </script>
