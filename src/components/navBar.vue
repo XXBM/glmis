@@ -1,5 +1,5 @@
 <template>
-<div id="navBar">
+    <div id="navBar">
       <el-menu unique-opened router v-show="!collapsed">
             <!--动态路由到子组件 将不可见的路径隐藏-->
           <template v-for="(item,index) in menuData">
@@ -56,6 +56,6 @@ export default {
     },
 }
 </script>
-<style type="text/css">
+<style>
     
 </style>

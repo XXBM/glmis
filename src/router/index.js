@@ -3,7 +3,9 @@ import Router from 'vue-router'
 
 //For router-use
 import homePage from '../components/homePage.vue'
-
+import scientificInfo from '../components/scientificResearch/scientificInformation'
+import attendanceManager from '../components/attendance/attendanceManager/attendanceManager'
+import myScientificResearch from '../components/employee/scientificResearch/myScientificResearch'
 Vue.use(Router)
 
 export default new Router({
@@ -21,7 +23,7 @@ export default new Router({
     	{
         path: '/attendanceManager',
         name: '考勤管理',
-        component: homePage
+        component: attendanceManager
     	},
     	{
         path: '/attendanceQuery',
@@ -36,12 +38,12 @@ export default new Router({
     	{
         path: '/scientificResearch',
         name: '科研管理',
-        component: homePage
+        component: scientificInfo
     	},
     	{
         path: '/myScientificResearch',
         name: '我的科研',
-        component: homePage
+        component: myScientificResearch
     	},
         {
         path: '/academicDegree',
