@@ -8,8 +8,12 @@
     </el-tab-pane>
     <el-tab-pane label="论文" name="third">角色管理</el-tab-pane>
     <el-tab-pane label="获奖" name="dd">定时任务补偿</el-tab-pane>
-    <el-tab-pane label="教材" name="fouddrth">定时任务补偿</el-tab-pane>
-    <el-tab-pane label="专著" name="fourssth">定时任务补偿</el-tab-pane>
+    <el-tab-pane label="教材" name="textBook">
+    	<text-book :url="textBookUrl" :workerId="workerId"></text-book>
+    </el-tab-pane>
+    <el-tab-pane label="专著" name="monograph">
+    	<monograph :url="monographUrl" :workerId="workerId"></monograph>
+    </el-tab-pane>
   </el-tabs>
 </template>
 <script>
@@ -24,7 +28,10 @@ import thesis from './thesis'
 			return{
 				projectUrl:'',
 				lengthwaysUrl:'',
-				workerId:'',
+				textBookUrl:'',
+				monographUrl:'',
+				workerId:''
+
 			}
 		},
 		props:['materialForWorker'],
@@ -43,10 +50,10 @@ import thesis from './thesis'
 
 				}else if(tab.name=="获奖"){
 
-				}else if(tab.name=="教材"){
-
+				}else if(tab.name=="textBook"){
+					this.textBookUrl="/displayTextbookByEmp?id="+this.materialForWorker
 				}else{
-
+					this.monographUrl="/displayMonographByEmp?id="+this.materialForWorker
 				}
 			}
 		},
