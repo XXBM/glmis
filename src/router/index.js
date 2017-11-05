@@ -6,6 +6,9 @@ import homePage from '../components/homePage.vue'
 import scientificInfo from '../components/scientificResearch/scientificInformation'
 import attendanceManager from '../components/attendance/attendanceManager/attendanceManager'
 import myScientificResearch from '../components/employee/scientificResearch/myScientificResearch'
+// rscx
+import employeeInformation from '../components/personnel/rsgl/employeeInformation'
+
 Vue.use(Router)
 
 export default new Router({
@@ -13,7 +16,7 @@ export default new Router({
     	{
         path: '/personnel',
         name: '人事信息',
-        component: homePage
+        component: employeeInformation
     	},
     	{
         path: '/tjcx',

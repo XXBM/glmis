@@ -76,11 +76,11 @@
 		  title="添加"
 		  :visible.sync="isAddDialogVisible"
 		  width="50%">
-		  	<el-form ref="form" :model="addForm" label-width="80px">
-			  <el-form-item label="题目">
+		  	<el-form :model="addForm" :rules="rules" ref="addForm" label-width="80px">
+			  <el-form-item label="题目" prop="title">
 			    <el-input v-model="addForm.title"></el-input>
 			  </el-form-item>
-			  <el-form-item label="期刊名称">
+			  <el-form-item label="期刊名称" prop="name">
 			    <el-input v-model="addForm.name"></el-input>
 			  </el-form-item>
 			  <el-form-item label="期刊级别">
@@ -93,25 +93,25 @@
 				    </el-option>
 				</el-select>
 			  </el-form-item>
-			  <el-form-item label="本人位次">
+			  <el-form-item label="本人位次" prop="seating">
 			    <el-input v-model="addForm.seating"></el-input>
 			  </el-form-item>
-			  <el-form-item label="参加人数">
+			  <el-form-item label="参加人数" prop="numOfParticipants">
 			    <el-input v-model="addForm.numOfParticipants"></el-input>
 			  </el-form-item>
-			  <el-form-item label="发表-年">
+			  <el-form-item label="发表-年" prop="year">
 			    <el-input v-model="addForm.year"></el-input>
 			  </el-form-item>
-			  <el-form-item label="发表-期">
+			  <el-form-item label="发表-期" prop="issue">
 			    <el-input v-model="addForm.issue"></el-input>
 			  </el-form-item>
-			  <el-form-item label="发表-卷">
+			  <el-form-item label="发表-卷" prop="volume">
 			    <el-input v-model="addForm.volume"></el-input>
 			  </el-form-item>
-			  <el-form-item label="起始页码">
+			  <el-form-item label="起始页码" prop="startingPageNo">
 			    <el-input v-model="addForm.startingPageNo"></el-input>
 			  </el-form-item>
-			  <el-form-item label="结束页码">
+			  <el-form-item label="结束页码" prop="endingPageNo">
 			    <el-input v-model="addForm.endingPageNo"></el-input>
 			  </el-form-item>
 			  <el-form-item label="收录情况">
@@ -134,11 +134,11 @@
 		  title="修改"
 		  :visible.sync="isEditDialogVisible"
 		  width="50%">
-		  	<el-form ref="form" :model="editForm" label-width="80px">
-			  <el-form-item label="题目">
+		  	<el-form :model="editForm" :rules="rules" ref="editForm" label-width="80px">
+			  <el-form-item label="题目" prop="title">
 			    <el-input v-model="editForm.title"></el-input>
 			  </el-form-item>
-			  <el-form-item label="期刊名称">
+			  <el-form-item label="期刊名称" prop="name">
 			    <el-input v-model="editForm.name"></el-input>
 			  </el-form-item>
 			  <el-form-item label="期刊级别">
@@ -151,25 +151,25 @@
 				    </el-option>
 				</el-select>
 			  </el-form-item>
-			  <el-form-item label="本人位次">
+			  <el-form-item label="本人位次" prop="seating">
 			    <el-input v-model="editForm.seating"></el-input>
 			  </el-form-item>
-			  <el-form-item label="参加人数">
+			  <el-form-item label="参加人数" prop="numOfParticipants">
 			    <el-input v-model="editForm.numOfParticipants"></el-input>
 			  </el-form-item>
-			  <el-form-item label="发表-年">
+			  <el-form-item label="发表-年" prop="year">
 			    <el-input v-model="editForm.year"></el-input>
 			  </el-form-item>
-			  <el-form-item label="发表-期">
+			  <el-form-item label="发表-期" prop="issue">
 			    <el-input v-model="editForm.issue"></el-input>
 			  </el-form-item>
-			  <el-form-item label="发表-卷">
+			  <el-form-item label="发表-卷" prop="volume">
 			    <el-input v-model="editForm.volume"></el-input>
 			  </el-form-item>
-			  <el-form-item label="起始页码">
+			  <el-form-item label="起始页码" prop="startingPageNo">
 			    <el-input v-model="editForm.startingPageNo"></el-input>
 			  </el-form-item>
-			  <el-form-item label="结束页码">
+			  <el-form-item label="结束页码" prop="endingPageNo">
 			    <el-input v-model="editForm.endingPageNo"></el-input>
 			  </el-form-item>
 			  <el-form-item label="收录情况">
@@ -236,6 +236,11 @@ import msgDialog from '../../common/msgDialog'
 				checkingStatusId:'',
 				// 保存当前行的所有信息
 				currentRow:'',
+				rules:{
+					title:[
+					{required:true,trigger:'blur'&'change'}
+					]
+				}
 			}
 		},
 		methods:{

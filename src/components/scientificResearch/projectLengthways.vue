@@ -204,9 +204,6 @@ import msgDialog from '../common/msgDialog'
 			msgDialog
 		},
 		methods:{
-			inquiry(){
-				var url = this.HOST + ""
-			},
 			handleCurrentChange(){
 				var projectUrl = this.HOST + this.url+"&page=1&rows=9"
 				this.$http.get(projectUrl).then(response=>{
