@@ -202,7 +202,6 @@ import msgDialog from '../common/msgDialog'
 				this.$http.get(awardUrl).then(response=>{
 					this.tableData = response.data.rows
 					this.total = response.data.total
-					alert(this.tableData)
 				}).catch(errors=>{
 
 				})
