@@ -74,6 +74,7 @@
 	</el-row>
 </template>
 <script type="text/javascript">
+import visitingAcademic from './tabs/visitingAcademic'
 	export default{
 		data(){
 			return{
@@ -160,10 +161,13 @@
 				}else if(tab.name=="degreeMeeting"){
 					this.degreeMeetingUrl=""
 				}else if(tab.name=="visitingAcademics"){
-					this.visitingAcademicsUrl=""
+					this.visitingAcademicsUrl="/displayStuByEmp?id="+this.currentRow.id
 				}else{
 					this.previousWorkExperiencesUrl=""
 				}
+			},
+			currentRow(currentRow){
+				this.currentRow=currentRow
 			}
 		},
 		watch:{
@@ -175,8 +179,9 @@
 				})
 			},
 		},
-		currentRow(currentRow){
-			this.currentRow=currentRow
+		components:{
+			visitingAcademic
 		}
+		
 	}
 </script>
