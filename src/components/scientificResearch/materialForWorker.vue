@@ -6,7 +6,9 @@
     <el-tab-pane label="项目(纵向)" name="lengthways">
     	<project :url="lengthwaysUrl"></project>
     </el-tab-pane>
-    <el-tab-pane label="论文" name="third">角色管理</el-tab-pane>
+    <el-tab-pane label="论文" name="thesis">
+      <thesis :url="thesisUrl" :workerId="workerId"></thesis>
+    </el-tab-pane>
     <el-tab-pane label="获奖" name="award">
     	<award :url="awardUrl"></award>
     </el-tab-pane>
@@ -33,6 +35,7 @@ import thesis from './thesis'
 				textBookUrl:'',
 				monographUrl:'',
 				awardUrl:'',
+        thesisUrl:'',
 				workerId:''
 
 			}
@@ -49,8 +52,8 @@ import thesis from './thesis'
 					this.projectUrl="/displayProjectFundedByPrivateSectorByEmp?id="+this.materialForWorker
 				}else if(tab.name=="lengthways"){
 					this.lengthwaysUrl="/displayProjectFundedByGovernmentByEmp?id="+this.materialForWorker
-				}else if(tab.name=="论文"){
-
+				}else if(tab.name=="thesis"){
+          this.thesisUrl="/displayScienThesisByEmp?id="+this.materialForWorker
 				}else if(tab.name=="award"){
 					this.awardUrl="/displayScienAwardsByEmp?id="+this.materialForWorker
 				}else if(tab.name=="textBook"){
