@@ -1,18 +1,20 @@
 <template>
 	<el-tabs type="card" @tab-click="handleClick">
     <el-tab-pane label="项目(横向)" name="project">
-    	<project-lengthways :url="projectUrl" :workerId="workerId"></project-lengthways>
+    	<project-lengthways :url="projectUrl"></project-lengthways>
     </el-tab-pane>
     <el-tab-pane label="项目(纵向)" name="lengthways">
-    	<project :url="lengthwaysUrl" :workerId="workerId"></project>
+    	<project :url="lengthwaysUrl"></project>
     </el-tab-pane>
     <el-tab-pane label="论文" name="third">角色管理</el-tab-pane>
-    <el-tab-pane label="获奖" name="dd">定时任务补偿</el-tab-pane>
+    <el-tab-pane label="获奖" name="award">
+    	<award :url="awardUrl"></award>
+    </el-tab-pane>
     <el-tab-pane label="教材" name="textBook">
-    	<text-book :url="textBookUrl" :workerId="workerId"></text-book>
+    	<text-book :url="textBookUrl"></text-book>
     </el-tab-pane>
     <el-tab-pane label="专著" name="monograph">
-    	<monograph :url="monographUrl" :workerId="workerId"></monograph>
+    	<monograph :url="monographUrl"></monograph>
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -30,6 +32,7 @@ import thesis from './thesis'
 				lengthwaysUrl:'',
 				textBookUrl:'',
 				monographUrl:'',
+				awardUrl:'',
 				workerId:''
 
 			}
@@ -48,8 +51,8 @@ import thesis from './thesis'
 					this.lengthwaysUrl="/displayProjectFundedByGovernmentByEmp?id="+this.materialForWorker
 				}else if(tab.name=="论文"){
 
-				}else if(tab.name=="获奖"){
-
+				}else if(tab.name=="award"){
+					this.awardUrl="/displayScienAwardsByEmp?id="+this.materialForWorker
 				}else if(tab.name=="textBook"){
 					this.textBookUrl="/displayTextbookByEmp?id="+this.materialForWorker
 				}else{

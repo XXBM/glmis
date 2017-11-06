@@ -76,15 +76,15 @@
 		  title="添加"
 		  :visible.sync="isAddDialogVisible"
 		  width="50%">
-		  	<el-form :model="addForm" :rules="rules" ref="addForm" label-width="80px">
+		  	<el-form :model="addForm" :rules="rules" ref="ruleAdd" label-width="80px">
 			  <el-form-item label="题目" prop="title">
 			    <el-input v-model="addForm.title"></el-input>
 			  </el-form-item>
 			  <el-form-item label="期刊名称" prop="name">
 			    <el-input v-model="addForm.name"></el-input>
 			  </el-form-item>
-			  <el-form-item label="期刊级别">
-			  	<el-select v-model="journalRankId" placeholder="请选择">
+			  <el-form-item label="期刊级别" prop="journalRank">
+			  	<el-select v-model="addForm.journalRank" placeholder="请选择" prop="journalRankRule">
 				    <el-option
 				      v-for="item in journalRanks"
 				      :key="item.id"
@@ -114,8 +114,8 @@
 			  <el-form-item label="结束页码" prop="endingPageNo">
 			    <el-input v-model="addForm.endingPageNo"></el-input>
 			  </el-form-item>
-			  <el-form-item label="收录情况">
-			  	<el-select v-model="citationId" placeholder="请选择">
+			  <el-form-item label="收录情况" prop="citation">
+			  	<el-select v-model="addForm.citation" placeholder="请选择">
 				    <el-option
 				      v-for="item in citations"
 				      :key="item.id"
@@ -127,7 +127,7 @@
 			</el-form>
 		  <span slot="footer" class="dialog-footer">
 		    <el-button @click="cancleAdd">取 消</el-button>
-		    <el-button type="primary" @click="saveAdd">确 定</el-button>
+		    <el-button type="primary" @click="saveAdd(ruleAdd)">确 定</el-button>
 		  </span>
 		</el-dialog>
 		<el-dialog
@@ -238,8 +238,44 @@ import msgDialog from '../../common/msgDialog'
 				currentRow:'',
 				rules:{
 					title:[
-					{required:true,trigger:'blur'&'change'}
-					]
+					{required:true,trigger:'blur'&'change',message:"必填项"}
+					],
+					name:[
+					{required:true,trigger:'blur'&'change',message:"必填项"}
+					],
+					journalRank:[
+					{required:true,trigger:'blur'&'change',message:"必填项"}
+					],
+					seating:[
+					{required:true,trigger:'blur'&'change',message:"必填项"}
+					],
+					numOfParticipants:[
+					{required:true,trigger:'blur'&'change',message:"必填项"}
+					],
+					year:[
+					{required:true,trigger:'blur'&'change',message:"必填项"}
+					],
+					issue:[
+					{required:true,trigger:'blur'&'change',message:"必填项"}
+					],
+					volume:[
+					{required:true,trigger:'blur'&'change',message:"必填项"}
+					],
+					startingPageNo:[
+					{required:true,trigger:'blur'&'change',message:"必填项"}
+					],
+					endingPageNo:[
+					{required:true,trigger:'blur'&'change',message:"必填项"}
+					],
+					citation:[
+					{required:true,trigger:'blur'&'change',message:"必填项"}
+					],
+					journalRank:[
+					{type:'number',required:true,trigger:'blur'&'change',message:"必填项"}
+					],
+					citation:[
+					{type:'number',required:true,trigger:'blur'&'change',message:"必填项"}
+					],
 				}
 			}
 		},
@@ -252,20 +288,21 @@ import msgDialog from '../../common/msgDialog'
 					this.$refs.msgDialog.confirm("查询失败")
 				})
 			},
-			saveAdd(){
-				var url = this.HOST + "/addThesis"
-				this.addForm.journalRank = this.journalRankId
-				this.addForm.citation = this.citationId
-				this.$http.post(url,this.addForm).then(response=>{
-					this.$refs.msgDialog.notify("添加成功")
-					this.findThesis()
-				}).catch(errors=>{
-					this.$refs.msgDialog.confirm("添加失败")
+			saveAdd(ruleAdd){
+				this.$refs.ruleAdd.validate((valid)=>{
+					if(valid){
+						var url = this.HOST + "/addThesis"
+						this.$http.post(url,this.addForm).then(response=>{
+						this.$refs.msgDialog.notify("添加成功")
+						this.findThesis()
+					}).catch(errors=>{
+						this.$refs.msgDialog.confirm("添加失败")
+					})
+					this.addForm={}
+					this.isAddDialogVisible=false
+					}
 				})
-				this.addForm={}
-				this.journalRankId=''
-				this.citationId=''
-				this.isAddDialogVisible=false
+				
 			},
 			cancleAdd(){
 				this.addForm={}
