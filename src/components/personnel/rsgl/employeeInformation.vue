@@ -141,33 +141,18 @@ import visitingAcademic from './tabs/visitingAcademic'
 				this.currentPage=currentPage
 				this.findAllEmployees()
 			},
-			handleClick(tab){
-				if(tab.name=="personneInformation"){
-					this.personneInformationUrl=""
-				}else if(tab.name=="degree"){
-					this.degreeUrl=""
-				}else if(tab.name=="employeeAssProfessionalTitles"){
-					this.employeeAssProfessionalTitlesUrl=""
-				}else if(tab.name=="educationalBackground"){
-					this.educationalBackgroundUrl=""
-				}else if(tab.name=="practicingRequirements"){
-					this.practicingRequirementsUrl=""
-				}else if(tab.name=="reward"){
-					this.rewardUrl=""
-				}else if(tab.name=="experienceInCampus"){
-					this.experienceInCampusUrl=""
-				}else if(tab.name=="jobChange"){
-					this.jobChangeUrl=""
-				}else if(tab.name=="degreeMeeting"){
-					this.degreeMeetingUrl=""
-				}else if(tab.name=="visitingAcademics"){
-					this.visitingAcademicsUrl="/displayStuByEmp?id="+this.currentRow.id
-				}else{
-					this.previousWorkExperiencesUrl=""
-				}
-			},
 			currentRow(currentRow){
-				this.currentRow=currentRow
+				this.personneInformationUrl=""
+				this.degreeUrl=""
+				this.employeeAssProfessionalTitlesUrl=""
+				this.educationalBackgroundUrl=""
+				this.practicingRequirementsUrl=""
+				this.rewardUrl=""
+				this.experienceInCampusUrl=""
+				this.jobChangeUrl=""
+				this.degreeMeetingUrl=""
+				this.visitingAcademicsUrl="/displayStuByEmp?id="+currentRow.id
+				this.previousWorkExperiencesUrl=""
 			}
 		},
 		watch:{
