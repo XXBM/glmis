@@ -2,6 +2,9 @@
 	<div>
 		<el-tabs type="card" @tab-click="handleClick">
 		    <el-tab-pane label="论文" name="thesis">论文</el-tab-pane>
+		    <el-tab-pane label="论文" name="thesis">
+		    	<thesis></thesis>
+		    </el-tab-pane>
 		    <el-tab-pane label="获奖" name="award">获奖</el-tab-pane>
 		    <el-tab-pane label="专著" name="monograph">专著</el-tab-pane>
 		    <el-tab-pane label="教材" name="teachingMaterial">
@@ -49,6 +52,8 @@ import lengwaysProject from './lengwaysProject.vue'
 			teachingMaterial,
 			infeedProject,
 			lengwaysProject,
+			thesis
 		}
 	}
+
 </script>

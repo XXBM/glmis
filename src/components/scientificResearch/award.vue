@@ -1,23 +1,23 @@
 <template>
 	<div>
-		<el-row>
+        <el-row>
   			<el-collapse>
 			  <el-collapse-item title="查询 inquiry" name="1">
 			  	<el-form :inline="true" class="demo-form-inline">
-				  <el-form-item label="经费:">
-				    <el-input v-model="expenditure"></el-input>
+				  <el-form-item label="位次:">
+				    <el-input v-model="seating"></el-input>
 				  </el-form-item>
-				  <el-form-item label="立项时间">
+				  <el-form-item label="获奖时间">
 				    <el-date-picker
-				      v-model="objectTime"
+				      v-model="dateOfAward"
 				      type="daterange"
 				      placeholder="选择日期范围">
 				    </el-date-picker>
 				  </el-form-item>
 				  <el-form-item label="级别:">
-				    <el-select v-model="projectRankIds" placeholder="请选择">
+				    <el-select v-model="awardsRankIds" placeholder="请选择">
 					    <el-option
-					      v-for="item in projectRanks"
+					      v-for="item in awardsRanks"
 					      :key="item.id"
 					      :label="item.description"
 					      :value="item.id">
@@ -52,44 +52,36 @@
 		    border
 		    style="width: 100%"
 		    @row-click="getCurrentRow"
-		    :highlight-current-row='true'>
+		    highlight-current-row>
 		    <el-table-column
-		      prop="projectFundedByPrivateSectorRank.description"
+		      prop="awardsRank.description"
 		      label="级别"
 		      >
 		    </el-table-column>
 		    <el-table-column
-		      prop="name"
-		      label="名称"
+		      prop="title"
+		      label="成果名称"
 		      >
 		    </el-table-column>
 		    <el-table-column
-		      prop="no"
-		      label="编号">
+		      prop="author"
+		      label="代表作者">
 		    </el-table-column>
 		    <el-table-column
-		      prop="resource"
-		      label="来源">
+		      prop="name"
+		      label="奖项名称">
 		    </el-table-column>
 		    <el-table-column
-		      prop="leader"
-		      label="项目负责人">
+		      prop="awardLevel.description"
+		      label="等级">
 		    </el-table-column>
 		    <el-table-column
 		      prop="sponsor"
 		      label="批准部门">
 		    </el-table-column>
 		    <el-table-column
-		      prop="startTime"
-		      label="开始时间">
-		    </el-table-column>
-		    <el-table-column
-		      prop="endTime"
-		      label="结束时间">
-		    </el-table-column>
-		    <el-table-column
-		      prop="expenditure"
-		      label="经费(万)">
+		      prop="dateOfAward"
+		      label="获奖时间">
 		    </el-table-column>
 		    <el-table-column
 		      prop="seating"
@@ -147,23 +139,23 @@ import msgDialog from '../common/msgDialog'
 				total:0,
 				// 当前页页码，分页用
 				currentPage:1,
-				
+
 				//查询用
-				// 经费
-				expenditure:'',
+				// 位次
+				seating:'',
 				// 查询时间
-				objectTime:[],
+				dateOfAward:[],
 				// 级别的id
-				projectRankIds:'',
+				awardsRankIds:'',
 				// 审核状态的id
 				checkingStatusIds:'',
-
 
 				// 审核状态的id，用于在点击审核时进行绑定
 				checkingStatusId:'',
 
+
 				// 保存所有的等级信息
-				projectRanks:[],
+				awardsRanks:[],
 				// 用于保存所有的审核状态信息
 				checkingStatus:[],
 
@@ -172,9 +164,7 @@ import msgDialog from '../common/msgDialog'
 				// 用于保存当前行的信息
 				currentRow:'',
 				// 判断是否有选中的行
-				projectId:''
-
-
+				awardId:''
 
 			}
 		},
@@ -187,9 +177,9 @@ import msgDialog from '../common/msgDialog'
 			}
 		},
 		created(){
-			var rankUrl = this.HOST + "/findAllRank"
+			var rankUrl = this.HOST + "/findAllAwardsRanks"
 			this.$http.get(rankUrl).then(response=>{
-				this.projectRanks = response.data
+				this.awardsRanks = response.data
 			}).catch(errors=>{
 				this.$refs.msgDialog.confirm("获取失败")
 			})
@@ -204,29 +194,22 @@ import msgDialog from '../common/msgDialog'
 			msgDialog
 		},
 		methods:{
-<<<<<<< HEAD
 			inquiry(){
 				var url = this.HOST + ""
 			},
-=======
->>>>>>> ad2275bbbbe6fb6c734abca41c8778943a901251
 			handleCurrentChange(){
-				var projectUrl = this.HOST + this.url+"&page=1&rows=9"
-				this.$http.get(projectUrl).then(response=>{
+				var awardUrl = this.HOST + this.url+"&page=1&rows=9"
+				this.$http.get(awardUrl).then(response=>{
 					this.tableData = response.data.rows
 					this.total = response.data.total
 				}).catch(errors=>{
-					
+
 				})
 			},
 			// 保存修改的审核信息
 			saveCheckStatus(){
 				this.currentRow.checkingStatus.id=this.checkingStatusId
-<<<<<<< HEAD
-				var url = this.HOST + '/updateProjectFundedByGovernment'
-=======
-				var url = this.HOST + '/updateProjectFundedByPrivateSector'
->>>>>>> ad2275bbbbe6fb6c734abca41c8778943a901251
+				var url = this.HOST + '/updateAwards'
 				this.$http.put(url,this.currentRow).then(response=>{
 					this.$refs.msgDialog.notify("修改成功")
 					this.handleCurrentChange()
@@ -242,9 +225,9 @@ import msgDialog from '../common/msgDialog'
 			},
 			// 查询方法
 			onSubmit(){
-				var startTime = this.moment(this.objectTime[0]).format('YYYY-MM-DD')
-                var endTime = this.moment(this.objectTime[(this.objectTime.length)-1]).format('YYYY-MM-DD')
-				var url = this.HOST + '/dispProjectFundedByGovernmentSpecification?expenditure='+this.expenditure+"&;startTime="+startTime+"&;endTime="+endTime+"&;projectRankIds="+this.projectRankIds+"&;checkingStatusIds="+this.checkingStatusIds+"&page=1&rows=9"
+				var startTime = this.moment(this.dateOfAward[0]).format('YYYY-MM-DD')
+                var endTime = this.moment(this.dateOfAward[(this.dateOfAward.length)-1]).format('YYYY-MM-DD')
+				var url = this.HOST + '/dispAwardsSpecification?awardsRankIds='+this.awardsRankIds+"&;startTime="+startTime+"&;endTime="+endTime+"&;seating="+this.seating+"&;checkingStatusId="+this.checkingStatusIds+"&page=1&rows=9"
 				this.$http.get(url).then(response=>{
 					this.$refs.msgDialog.notify("查询成功")
 					this.tableData = response.data.rows
@@ -256,10 +239,10 @@ import msgDialog from '../common/msgDialog'
 			getCurrentRow(currentRow){
 				this.currentRow = currentRow
 				this.checkingStatusId=this.currentRow.checkingStatus.id
-				this.projectId = this.currentRow.id
+				this.awardId = this.currentRow.id
 			},
 			checking(){
-				if(this.projectId==''){
+				if(this.awardId==''){
 					this.$refs.msgDialog.confirm("请先选择一行")
 				}else
 					this.showCheckingStatusDialog=true
@@ -267,3 +250,4 @@ import msgDialog from '../common/msgDialog'
 		}
 	}
 </script>
+
