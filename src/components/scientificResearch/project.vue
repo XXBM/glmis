@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<el-row>
+			<!-- 下拉面板，用来存放查询的条目 -->
   			<el-collapse>
 			  <el-collapse-item title="查询 inquiry" name="1">
 			  	<el-form :inline="true" class="demo-form-inline">
@@ -35,7 +36,7 @@
 					</el-select>
 				  </el-form-item>
 				  <el-form-item>
-				    <el-button type="primary" @click="onSubmit">查询</el-button>
+				    <el-button type="primary" @click="assignment">查询</el-button>
 				  </el-form-item>
 				</el-form>
 			  </el-collapse-item>
@@ -105,10 +106,12 @@
 		    </el-table-column>
 		  </el-table>
 		  <el-pagination
-		      @current-change="handleCurrentChange"
+		  	  @size-change="handleSizeChange"
+		      @current-change="changeCurrentPage"
 		      :current-page="currentPage"
-		      :page-size="9"
-		      layout="total, prev, pager, next, jumper"
+		      :page-size="pageSize"
+		      :page-sizes="[5,10,15]"
+		      layout="sizes,total, prev, pager, next, jumper"
 		      :total="total">
 		  </el-pagination>
 		</el-row>
@@ -147,6 +150,8 @@ import msgDialog from '../common/msgDialog'
 				total:0,
 				// 当前页页码，分页用
 				currentPage:1,
+				// 当前页页面容量
+				pageSize:5,
 				
 				//查询用
 				// 经费
@@ -157,84 +162,126 @@ import msgDialog from '../common/msgDialog'
 				projectRankIds:'',
 				// 审核状态的id
 				checkingStatusIds:'',
-
-
 				// 审核状态的id，用于在点击审核时进行绑定
 				checkingStatusId:'',
-
 				// 保存所有的等级信息
 				projectRanks:[],
 				// 用于保存所有的审核状态信息
 				checkingStatus:[],
-
 				// 初始时，拒绝审核对话框的显示
 				showCheckingStatusDialog:false,
-				// 用于保存当前行的信息
+				// 用于保存当前行的信息,和判断是否有选择行
 				currentRow:'',
-				// 判断是否有选中的行
-				projectId:''
+				// 用来在换页时判断是在查询信息的状态下还是所有信息的状态下
+				inquiry:false,
+				// 用来保存格式化后的开始时间
+				startTime:'',
+				// 用来保存格式化后的结束时间
+				endTime:''
 
 
 
 			}
 		},
-		// 获取父组件传递来的数值
+		// 获取父组件传递来的数值，该数值为访问后台的url(带id)
 		props:['url'],
 		// 用于监控，当。。。变化时，执行。。。
 		watch:{
 			url:function(){
-				this.handleCurrentChange()
+				this.findProject()
 			}
 		},
+		// 页面加载时执行
 		created(){
-			var rankUrl = this.HOST + "/findAllRank"
+			// 新建变量，用来存放获取等级信息的url
+			var rankUrl = this.HOST + "/findAllProjectFundedByGovernmentRanks"
+			// 访问后台，获取所有的等级信息
 			this.$http.get(rankUrl).then(response=>{
+				// 将后台返回的等级信息赋值给前台变量
 				this.projectRanks = response.data
 			}).catch(errors=>{
 				this.$refs.msgDialog.confirm("获取失败")
 			})
+			// 新建变量，用来存放获取审核状态的url
 			var checkingStatusUrl = this.HOST + "/findAllScienReasCheckingStatus"
+			// 访问后台，获取所有的审核状态信息
 			this.$http.get(checkingStatusUrl).then(response=>{
+				// 将后台返回的审核状态信息赋值给前台变量
 				this.checkingStatus = response.data
 			}).catch(errors=>{
 				this.$refs.msgDialog.confirm("获取失败")
 			})
 		},
+		// 注册组件
 		components:{
 			msgDialog
 		},
+		// 定义方法
 		methods:{
-			handleCurrentChange(){
-				var projectUrl = this.HOST + this.url+"&page=1&rows=9"
+			// 定义页面切换时触发的方法，当页面切换时触发该方法，先将改变后的页面变为当前页，然后进行判断，若是查询状态下，则先让当前页为1，再进行查询，否则正常查询
+			changeCurrentPage(current){
+				this.currentPage=current
+				if(this.inquiry){
+					this.currentPage=1
+					this.onSubmit()
+				}else
+					this.findProject()
+			},
+			// 获取所有的项目信息
+			findProject(){
+				// 定义url用来存放获取所有项目信息的地址
+				var projectUrl = this.HOST + this.url+"&page="+this.currentPage+"&rows="+this.pageSize
+				// 访问后台，获取所有的项目信息
 				this.$http.get(projectUrl).then(response=>{
 					this.tableData = response.data.rows
 					this.total = response.data.total
 				}).catch(errors=>{
-					
+					this.$refs.msgDialog.confirm("获取失败")
 				})
 			},
 			// 保存修改的审核信息
 			saveCheckStatus(){
+				// 令当前行中的审核状态的id为选择的审核状态的id
 				this.currentRow.checkingStatus.id=this.checkingStatusId
+				// 定义变量用来存放修改当前行信息的地址
 				var url = this.HOST + '/updateProjectFundedByGovernment'
+				// 访问后台，并将当前行的所有信息作为对象传给后台
 				this.$http.put(url,this.currentRow).then(response=>{
 					this.$refs.msgDialog.notify("修改成功")
-					this.handleCurrentChange()
+					this.findProject()
 				}).catch(errors=>{
 					this.$refs.msgDialog.confirm("修改失败")
 				})
 				this.showCheckingStatusDialog = false
 
 			},
+			// 当点击取消时执行本方法，关闭对话框,并给审核框恢复原来的数据
 			cancle(){
 				this.showCheckingStatusDialog = false
-				this.checkingStatusIds = ''
+				this.checkingStatusId=this.currentRow.checkingStatus.id
+			},
+			handleSizeChange(currentSize){
+				this.pageSize=currentSize
+				if(this.inquiry){
+					this.currentPage=1
+					this.onSubmit()
+				}else{
+					this.findProject()
+				}
+
+			},
+			// 当点击查询时执行本方法，将当前状态切换为查询状态，若选择时间，则对时间进行格式化
+			assignment(){
+				this.inquiry=true
+				if(this.objectTime!=''){
+					this.startTime = this.moment(this.objectTime[0]).format('YYYY-MM-DD')
+	                this.endTime = this.moment(this.objectTime[(this.objectTime.length)-1]).format('YYYY-MM-DD')
+                }
+                this.onSubmit()
 			},
 			// 查询方法
 			onSubmit(){
-				var startTime = this.moment(this.objectTime[0]).format('YYYY-MM-DD')
-                var endTime = this.moment(this.objectTime[(this.objectTime.length)-1]).format('YYYY-MM-DD')
-				var url = this.HOST + '/dispProjectFundedByGovernmentSpecification?expenditure='+this.expenditure+"&;startTime="+startTime+"&;endTime="+endTime+"&;projectRankIds="+this.projectRankIds+"&;checkingStatusIds="+this.checkingStatusIds+"&page=1&rows=9"
+				var url = this.HOST + '/dispProjectFundedByGovernmentSpecification?expenditure='+this.expenditure+"&;startTime="+this.startTime+"&;endTime="+this.endTime+"&;projectRankIds="+this.projectRankIds+"&;checkingStatusIds="+this.checkingStatusIds+"&page="+this.currentPage+"&rows="+this.pageSize
 				this.$http.get(url).then(response=>{
 					this.$refs.msgDialog.notify("查询成功")
 					this.tableData = response.data.rows
@@ -243,13 +290,14 @@ import msgDialog from '../common/msgDialog'
 					this.$refs.msgDialog.confirm("查询失败")
 				})
 			},
+			// 获取当前行
 			getCurrentRow(currentRow){
 				this.currentRow = currentRow
 				this.checkingStatusId=this.currentRow.checkingStatus.id
-				this.projectId = this.currentRow.id
 			},
+			// 点击审核触发该方法，进行判断是否可以进行审核
 			checking(){
-				if(this.projectId==''){
+				if(this.currentRow==''){
 					this.$refs.msgDialog.confirm("请先选择一行")
 				}else
 					this.showCheckingStatusDialog=true

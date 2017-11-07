@@ -64,7 +64,7 @@
 					学术会议
 				</el-tab-pane>
 				<el-tab-pane label="国内外访学记录" name="visitingAcademics">
-					国内外访学记录
+					<visiting-academic :url="visitingAcademicsUrl"></visiting-academic>
 				</el-tab-pane>
 				<el-tab-pane label="来校前工作经历" name="previousWorkExperiences">
 					来校前工作经历
@@ -180,7 +180,7 @@ import visitingAcademic from './tabs/visitingAcademic'
 			},
 		},
 		components:{
-			visitingAcademic
+			visitingAcademic,
 		}
 		
 	}

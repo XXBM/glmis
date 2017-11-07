@@ -1,5 +1,5 @@
 <template>
-	<el-tabs type="card" @tab-click="handleClick">
+	<el-tabs type="card">
     <el-tab-pane label="项目(横向)" name="project">
     	<project-lengthways :url="projectUrl"></project-lengthways>
     </el-tab-pane>
@@ -35,7 +35,7 @@ import thesis from './thesis'
 				textBookUrl:'',
 				monographUrl:'',
 				awardUrl:'',
-        thesisUrl:'',
+        		thesisUrl:'',
 				workerId:''
 
 			}
@@ -44,24 +44,16 @@ import thesis from './thesis'
 		watch:{
 			materialForWorker:function(){
 				this.workerId = this.materialForWorker
+				this.projectUrl="/displayProjectFundedByPrivateSectorByEmp?id="+this.materialForWorker
+				this.lengthwaysUrl="/displayProjectFundedByGovernmentByEmp?id="+this.materialForWorker
+				this.thesisUrl="/displayScienThesisByEmp?id="+this.materialForWorker
+				this.awardUrl="/displayScienAwardsByEmp?id="+this.materialForWorker
+				this.textBookUrl="/displayTextbookByEmp?id="+this.materialForWorker
+				this.monographUrl="/displayMonographByEmp?id="+this.materialForWorker
 			}
 		},
 		methods:{
-			handleClick(tab){
-				if(tab.name=="project"){
-					this.projectUrl="/displayProjectFundedByPrivateSectorByEmp?id="+this.materialForWorker
-				}else if(tab.name=="lengthways"){
-					this.lengthwaysUrl="/displayProjectFundedByGovernmentByEmp?id="+this.materialForWorker
-				}else if(tab.name=="thesis"){
-          this.thesisUrl="/displayScienThesisByEmp?id="+this.materialForWorker
-				}else if(tab.name=="award"){
-					this.awardUrl="/displayScienAwardsByEmp?id="+this.materialForWorker
-				}else if(tab.name=="textBook"){
-					this.textBookUrl="/displayTextbookByEmp?id="+this.materialForWorker
-				}else{
-					this.monographUrl="/displayMonographByEmp?id="+this.materialForWorker
-				}
-			}
+			
 		},
 		components:{
 			project,

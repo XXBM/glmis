@@ -1,1 +1,95 @@
-<template></template>
+<template>
+	<div>
+		<el-row>
+			<el-button-group>
+				<el-button type="primary" icon="plus"></el-button>
+				<el-button type="primary" icon="edit"></el-button>
+				<el-button type="primary" icon="delete"></el-button>
+			</el-button-group>
+		</el-row>
+		<el-row>
+			<el-table
+			:data="tableData"
+			border
+			highlight-current-row
+			style="width:100%">
+				<el-table-column
+				type="selection"
+				width="50">
+				</el-table-column>
+				<el-table-column
+				prop="domesticOrNot.description"
+				label="是否国内访学"
+				width="180">
+				</el-table-column>
+				<el-table-column
+				prop="program"
+				label="进修名称"
+				width="180">
+				</el-table-column>
+				<el-table-column
+				prop="startTime"
+				label="开始时间"
+				width="180">
+				</el-table-column>
+				<el-table-column
+				prop="endTime"
+				label="结束时间"
+				width="180">
+				</el-table-column>
+				<el-table-column
+				prop="sponsor.description"
+				label="资助机构"
+				width="180">
+				</el-table-column>
+				<el-table-column
+				prop="visitedOrganization"
+				label="受访机构"
+				width="180">
+				</el-table-column>
+				<el-table-column
+				prop="supervisorName"
+				label="导师姓名"
+				width="180">
+				</el-table-column>
+				<el-table-column
+				prop="reportTime"
+				label="汇报时间"
+				width="180">
+				</el-table-column>
+				<el-table-column
+				prop="reviewResult.description"
+				label="审核结果"
+				width="180">
+				</el-table-column>
+			</el-table>
+		</el-row>
+		<el-row>
+			<el-dialog></el-dialog>
+		</el-row>
+	</div>
+</template>
+<script type="text/javascript">
+	export default{
+		props:['url'],
+		watch:{
+			url:function(){
+				this.findVisitingAcademic()
+			}
+		},
+		data(){
+			return{
+				tableData:[]
+			}
+		},
+		methods:{
+			findVisitingAcademic(){
+				var url=this.HOST + this.url + "&page=1&rows=9"
+				this.$http.get(url).then(response=>{
+					this.tableData=response.data.rows
+					this.total=response.data.total
+				})
+			}
+		}
+	}
+</script>
