@@ -41,7 +41,7 @@ import thesis from './thesis'
 			return{
 				projectUrl:'',
 				lengthwaysUrl:'',
-				workerId:''
+				workerId:'',
 				textBookUrl:'',
 				monographUrl:'',
 				awardUrl:'',

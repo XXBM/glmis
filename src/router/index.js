@@ -6,12 +6,9 @@ import homePage from '../components/homePage.vue'
 import scientificInfo from '../components/scientificResearch/scientificInformation'
 import attendanceManager from '../components/attendance/attendanceManager/attendanceManager'
 import myScientificResearch from '../components/employee/scientificResearch/myScientificResearch'
-<<<<<<< HEAD
-=======
 // rscx
 import employeeInformation from '../components/personnel/rsgl/employeeInformation'
 
->>>>>>> ad2275bbbbe6fb6c734abca41c8778943a901251
 Vue.use(Router)
 
 export default new Router({

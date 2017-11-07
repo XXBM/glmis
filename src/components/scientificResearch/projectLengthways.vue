@@ -204,12 +204,9 @@ import msgDialog from '../common/msgDialog'
 			msgDialog
 		},
 		methods:{
-<<<<<<< HEAD
 			inquiry(){
 				var url = this.HOST + ""
 			},
-=======
->>>>>>> ad2275bbbbe6fb6c734abca41c8778943a901251
 			handleCurrentChange(){
 				var projectUrl = this.HOST + this.url+"&page=1&rows=9"
 				this.$http.get(projectUrl).then(response=>{
@@ -222,11 +219,8 @@ import msgDialog from '../common/msgDialog'
 			// 保存修改的审核信息
 			saveCheckStatus(){
 				this.currentRow.checkingStatus.id=this.checkingStatusId
-<<<<<<< HEAD
 				var url = this.HOST + '/updateProjectFundedByGovernment'
-=======
 				var url = this.HOST + '/updateProjectFundedByPrivateSector'
->>>>>>> ad2275bbbbe6fb6c734abca41c8778943a901251
 				this.$http.put(url,this.currentRow).then(response=>{
 					this.$refs.msgDialog.notify("修改成功")
 					this.handleCurrentChange()
