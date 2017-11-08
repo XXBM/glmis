@@ -15,6 +15,7 @@
 			<el-table
 			:data="tableData"
 			style="width:100%"
+			highlight-current-row
 			@row-click="currentRow">
 				<el-table-column
 				prop="no"
