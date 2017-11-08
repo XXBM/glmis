@@ -57,52 +57,64 @@
 		    <el-table-column
 		      prop="projectFundedByGovernmentRank.description"
 		      label="级别"
+		      align="center"
 		      >
 		    </el-table-column>
 		    <el-table-column
 		      prop="name"
 		      label="名称"
+		      align="center"
 		      >
 		    </el-table-column>
 		    <el-table-column
 		      prop="no"
-		      label="编号">
+		      label="编号"
+		      align="center">
 		    </el-table-column>
 		    <el-table-column
 		      prop="resource"
-		      label="来源">
+		      label="来源"
+		      align="center">
 		    </el-table-column>
 		    <el-table-column
 		      prop="leader"
-		      label="项目负责人">
+		      label="项目负责人"
+		      align="center">
 		    </el-table-column>
 		    <el-table-column
 		      prop="sponsor"
-		      label="批准部门">
+		      label="批准部门"
+		      align="center">
 		    </el-table-column>
 		    <el-table-column
 		      prop="startTime"
-		      label="开始时间">
+		      label="开始时间"
+		      align="center">
 		    </el-table-column>
 		    <el-table-column
 		      prop="endTime"
-		      label="结束时间">
+		      label="结束时间"
+		      align="center">
 		    </el-table-column>
 		    <el-table-column
 		      prop="expenditure"
-		      label="经费(万)">
+		      label="经费(万)"
+		      align="center">
 		    </el-table-column>
 		    <el-table-column
 		      prop="seating"
-		      label="本人位次">
+		      label="本人位次"
+		      align="center">
 		    </el-table-column>
 		    <el-table-column
 		      prop="numOfParticipants"
-		      label="参加人数">
+		      label="参加人数"
+		      align="center">
 		    </el-table-column>
 		    <el-table-column
 		      prop="checkingStatus.state"
-		      label="状态">
+		      label="状态"
+		      align="center">
 		    </el-table-column>
 		  </el-table>
 		  <el-pagination

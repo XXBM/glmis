@@ -20,12 +20,14 @@
 				<el-table-column
 				prop="no"
 				label="职工号"
-				width="151">
+				width="151"
+				align="center">
 				</el-table-column>
 				<el-table-column
 				prop="name"
 				label="姓名"
-				width="155">
+				width="155"
+				align="center">
 				</el-table-column>
 			</el-table>
 			<el-pagination

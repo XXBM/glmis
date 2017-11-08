@@ -11,12 +11,14 @@
 				<el-table-column
 					prop="no"
 					label="职工号"
-					style="width:50%">
+					style="width:50%"
+					align="center">
 				</el-table-column>
 				<el-table-column
 					prop="name"
 					label="姓名"
-					style="width:50%">
+					style="width:50%"
+					align="center">
 				</el-table-column>
 				</el-table>
 			</el-row>
