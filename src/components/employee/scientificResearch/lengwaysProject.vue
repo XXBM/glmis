@@ -1,4 +1,5 @@
 <template>
+	<!-- 纵向 -->
 	<div>
 		<el-row>
 			<el-button-group>
