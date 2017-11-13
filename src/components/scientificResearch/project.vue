@@ -234,7 +234,6 @@ import msgDialog from '../common/msgDialog'
 			changeCurrentPage(current){
 				this.currentPage=current
 				if(this.inquiry){
-					this.currentPage=1
 					this.onSubmit()
 				}else
 					this.findProject()
@@ -273,9 +272,9 @@ import msgDialog from '../common/msgDialog'
 				this.checkingStatusId=this.currentRow.checkingStatus.id
 			},
 			handleSizeChange(currentSize){
+				this.currentPage=1
 				this.pageSize=currentSize
 				if(this.inquiry){
-					this.currentPage=1
 					this.onSubmit()
 				}else{
 					this.findProject()
@@ -284,14 +283,22 @@ import msgDialog from '../common/msgDialog'
 			},
 			// 当点击查询时执行本方法，将当前状态切换为查询状态，若选择时间，则对时间进行格式化
 			assignment(){
+				this.currentPage=1
 				this.inquiry=true
 				if(this.objectTime!=''){
 					this.startTime = this.moment(this.objectTime[0]).format('YYYY-MM-DD')
 	                this.endTime = this.moment(this.objectTime[(this.objectTime.length)-1]).format('YYYY-MM-DD')
                 }
-                this.onSubmit()
+                var url = this.HOST + '/dispProjectFundedByGovernmentSpecification?expenditure='+this.expenditure+"&;startTime="+this.startTime+"&;endTime="+this.endTime+"&;projectRankIds="+this.projectRankIds+"&;checkingStatusIds="+this.checkingStatusIds+"&page="+this.currentPage+"&rows="+this.pageSize
+				this.$http.get(url).then(response=>{
+					this.$refs.msgDialog.notify("查询成功")
+					this.tableData = response.data.rows
+					this.total = response.data.total
+				}).catch(errors=>{
+					this.$refs.msgDialog.confirm("查询失败")
+				})
 			},
-			// 查询方法
+			// 翻页时的查询方法
 			onSubmit(){
 				var url = this.HOST + '/dispProjectFundedByGovernmentSpecification?expenditure='+this.expenditure+"&;startTime="+this.startTime+"&;endTime="+this.endTime+"&;projectRankIds="+this.projectRankIds+"&;checkingStatusIds="+this.checkingStatusIds+"&page="+this.currentPage+"&rows="+this.pageSize
 				this.$http.get(url).then(response=>{
