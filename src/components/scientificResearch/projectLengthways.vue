@@ -290,14 +290,7 @@ import msgDialog from '../common/msgDialog'
 					this.startTime = this.moment(this.objectTime[0]).format('YYYY-MM-DD')
 	                this.endTime = this.moment(this.objectTime[(this.objectTime.length)-1]).format('YYYY-MM-DD')
                 }
-                var url = this.HOST + '/dispProjectFundedByGovernmentSpecification?expenditure='+this.expenditure+"&;startTime="+this.startTime+"&;endTime="+this.endTime+"&;projectRankIds="+this.projectRankIds+"&;checkingStatusIds="+this.checkingStatusIds+"&page="+this.currentPage+"&rows="+this.pageSize
-				this.$http.get(url).then(response=>{
-					this.$refs.msgDialog.notify("查询成功")
-					this.tableData = response.data.rows
-					this.total = response.data.total
-				}).catch(errors=>{
-					this.$refs.msgDialog.confirm("查询失败")
-				})
+               this.onSubmit()
 			},
 			// 翻页时的查询方法
 			onSubmit(){

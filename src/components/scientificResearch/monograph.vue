@@ -36,7 +36,7 @@
 							</el-select>
 						</el-form-item>
 						<el-form-item>
-					    	<el-button type="primary" @click="onSubmit">查询</el-button>
+					    	<el-button type="primary" @click="assignment">查询</el-button>
 					  	</el-form-item>
 					</el-form>
 				</el-collapse-item>
@@ -67,10 +67,12 @@
 				<el-table-column prop="checkingStatus.state" label="审核状态"></el-table-column>
 			</el-table>
 			<el-pagination
-		      @current-change="handleCurrentChange"
+		      @size-change="handleSizeChange"
+	          @current-change="changeCurrentPage"
 		      :current-page.sync="currentPage"
-		      :page-size="9"
-		      layout="total, prev, pager, next,jumper"
+		      :page-size="pageSize"
+	          :page-sizes="[5,10,15]"
+		      layout="total,sizes, prev, pager, next,jumper"
 		      :total="total">
     		</el-pagination>
 		</el-row>
@@ -109,6 +111,7 @@
 				total:0,
 				// 当前页的页码
 				currentPage:1,
+				pageSize:5,
 				// 用来保存当前行的信息
 				currentRow:'',
 				// 查询时所用的
@@ -126,85 +129,132 @@
 				checkingStatusIds:'',
 				// 审核状态的id，用于在点击审核时进行绑定
 				checkingStatusId:'',
-				// 判断是否有选中的行
-				monographId:'',
 				// 初始时，拒绝审核对话框的显示
 				showCheckingStatusDialog:false,
-				objectTime:[]
+				// 格式化后的开始时间
+				startTime:'',
+				// 格式化后的结束时间
+				endTime:'',
+				// 换页时判断是在查询条件下还是所有信息的条件下
+				inquiry:false
 			}
 		},
+		// 接收父组件传来的值
 		props:['url'],
+		// 用于监控
 		watch:{
 			url:function(){
-				this.handleCurrentChange()
+				this.findProject()
 			}
 		},
+		// 在页面加载时执行
 		created(){
+			// 创建变量rankUrl，存放获取级别信息的URL
 			var rankUrl = this.HOST + '/findAllMonographRanks'
+			// 获取所有的级别信息
 			this.$http.get(rankUrl).then(response=>{
+				// 将从后台获取的级别信息赋值给前台变量
 				this.monographRank = response.data
 			}).catch(error=>{
+				// 若没有获取成功，则提示获取失败
 				this.$refs.msgDialog.confirm("获取失败")
 			})
+			// 创建变量checkingStatuUrl，存放获取审核状态信息的URL
 			var checkingStatusUrl = this.HOST + '/findAllScienReasCheckingStatus'
 			this.$http.get(checkingStatusUrl).then(response=>{
+				// 将从后台获取的审核状态信息赋值给前台变量checkingStatus
 				this.checkingStatus = response.data
 			}).catch(error=>{
+				// 若没有获取成功，则提示获取失败
 				this.$refs.msgDialog.confirm("获取失败")
 			})
 		},
+		// 注册组件
 		components:{
 			msgDialog
 		},
 		methods:{
-			inquiry(){
-				var url = this.HOST + ''
+		// 当切换页面时执行changeCurrentPage方法，把将要切换到的页面赋值给当前页
+			changeCurrentPage(current){
+				this.currentPage=current
+				// 判断，如果是在查询状态下执行onSubmit
+				if(this.inquiry){
+					this.onSubmit();
+				}else{
+					this.findProject()
+				}
 			},
-			
-			handleCurrentChange(){
-				var monographUrl = this.HOST + this.url + "&page=1&rows=9"
+			// 改变页面的容量时执行的方法
+			handleSizeChange(currentSize){
+				this.pageSize=currentSize
+				if(this.inquiry){
+					// this.currentPage=1
+					this.onSubmit()
+				}else{
+					this.findProject()
+				}
+
+			},	
+			// 获取所有的项目信息		
+			findProject(){
+				// 定义变量存放获取项目信息的url
+				var monographUrl = this.HOST + this.url + "&page="+this.currentPage+"&rows="+this.pageSize
+				// 访问后台，获取所有的页面信息
 				this.$http.get(monographUrl).then(response=>{
 					this.tableData = response.data.rows
 					this.total = response.data.total
 				}).catch(error=>{
-					
+					this.$refs.msgDialog.confirm("获取失败")
 				})
 			},
+			// 获取当前行的信息
 			getCurrentRow(currentRow){
 				this.currentRow = currentRow
 				this.checkingStatusId = this.currentRow.checkingStatus.id
-				this.monographId = this.currentRow.id
-
 			},
 			// 保存修改的审核信息
 			saveCheckStatus(){
+				// 将选择的审核状态的id赋值给当前行的审核状态的id
 				this.currentRow.checkingStatus.id = this.checkingStatusId
 				var url = this.HOST + '/updateMonograph'
+				// 访问后台，并将当前行的所有信息作为对象传给后台
 				this.$http.put(url,this.currentRow).then(response=>{
 					this.$refs.msgDialog.notify("修改成功")
-					this.handleCurrentChange()
+					this.findProject()
 				}).catch(error=>{
 					this.$refs.msgDialog.confirm("修改失败")		
 				})
 				this.showCheckingStatusDialog=false
 			},
+			// 当点击取消时执行本方法，关闭对话框,并给审核框恢复原来的数据
 			cancle(){
 				this.showCheckingStatusDialog = false
 				this.checkingStatusIds = ''
 			},
 			// 判断是否有选中的行
 			checking(){
-				if(this.monographId==''){
+				if(this.currentRow==''){
 					this.$refs.msgDialog.confirm("请先选择一行")
 				}else{
 					this.showCheckingStatusDialog=true
 				}
 			},
+			// 当点击查询时执行本方法，将当前状态切换为查询状态，若选择时间，则对时间进行格式化
+			assignment(){
+				this.currentPage=1
+				this.inquiry=true
+				if(this.publicationTime!=''){
+					this.startTime = this.moment(this.publicationTime[0]).format('YYYY-MM-DD')
+	                this.endTime = this.moment(this.publicationTime[(this.publicationTime.length)-1]).format('YYYY-MM-DD')
+                }
+                this.onSubmit()
+                
+			},
 			// 查询方法
 			onSubmit(){
-				var startTime = this.moment(this.objectTime[0]).format('YYYY-MM-DD')
-                var endTime = this.moment(this.objectTime[(this.objectTime.length)-1]).format('YYYY-MM-DD')
-				var url = this.HOST + '/dispMonographSpecification?seating='+this.seating+"&;publishingStart="+startTime+"&;publishingEnd="+endTime+"&;monographRankIds="+this.monographRankId+"&;checkingStatusIds="+this.checkingStatusIds+"&page=1&rows=9"
+				// 定义变量，保存查询信息的url
+				var url = this.HOST + '/dispMonographSpecification?seating='+this.seating+"&;publishingStart="+this.startTime+"&;publishingEnd="+this.endTime+"&;monographRankIds="+this.monographRankId+"&;checkingStatusIds="+this.checkingStatusIds+"&page="+this.currentPage+"&rows="+this.pageSize
+				// 访问后台，获取查询的数据
 				this.$http.get(url).then(response=>{
 					this.$refs.msgDialog.notify("查询成功")
 					this.tableData = response.data.rows
@@ -212,7 +262,7 @@
 				}).catch(errors=>{
 					this.$refs.msgDialog.notify("查询失败")
 				})
-			},
+			}
 		}
 	}
 </script>
