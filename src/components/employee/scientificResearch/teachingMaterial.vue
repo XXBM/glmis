@@ -95,7 +95,7 @@
 		      		<el-input v-model="addData.words" type='number'></el-input>
 		     	</el-form-item>
 		      	<el-form-item
-					prop="textbookRank.description"
+					prop="textbookRank"
 		      		label="级别">
 		      		<el-select v-model="addData.textbookRank" placeholder="请选择">
 					    <el-option
@@ -159,7 +159,7 @@
 		      		<el-input v-model="editData.words" type='number'></el-input>
 		     	</el-form-item>
 		      	<el-form-item
-					prop="textbookRank.description"
+					prop="textbookRank"
 		      		label="级别">
 		      		<el-select v-model="editData.textbookRank" placeholder="请选择">
 					    <el-option
@@ -257,6 +257,7 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 		          name: [{ required: true, message: '必填项', trigger: 'blur'&'change'  }],
 		          editor: [{ required: true, message: '必填项', trigger: 'blur'&'change'  }],
 		          press:[{ required: true, message: '必填项', trigger: 'blur'&'change'}],
+		          textbookRank:[{required: true, type:'number',message: '必填项', trigger: 'blur'&'change'}],
 		          words:[{required: true, message: '必填项', trigger: 'blur'&'change'  }],
 		          isbn:[{required: true, message: '必填项', trigger: 'blur'&'change' }],
 		          seating:[{required: true, message: '必填项', trigger: 'blur'&'change' }],
@@ -320,6 +321,10 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 				})
 				
 			},
+			cancelAdd:function(){
+				this.addData={}
+				this.showAddDialog=false
+			},
 			edit:function(){
 				if (this.currentRowId=='') {
 					this.$refs.msgDialog.confirm("请选择要修改的行！")
@@ -367,6 +372,10 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 					}
 				})
 				
+			},
+			cancelEdit:function(){
+				this.editData={}
+				this.showEditDialog=false
 			},
 			remove:function(){
 				if (this.currentRowId=='') {
