@@ -308,6 +308,7 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 		          no: [{ required: true, message: '必填项', trigger: 'blur'&'change'  }],
 		          resource:[{ required: true, message: '必填项', trigger: 'blur'&'change'}],
 		          leader:[{required: true, message: '必填项', trigger: 'blur'&'change'  }],
+		          projectFundedByPrivateSectorRank:[{required: true, message: '必填项',type:'number', trigger: 'blur'&'change'}],
 		          sponsor:[{required: true, message: '必填项', trigger: 'blur'&'change'  }],
 		          expenditure:[{required: true, message: '必填项', trigger: 'blur'&'change' }],
 		          seating:[{required: true, message: '必填项', trigger: 'blur'&'change' }],
