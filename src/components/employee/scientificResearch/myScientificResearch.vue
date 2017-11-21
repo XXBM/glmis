@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<el-tabs type="card" @tab-click="handleClick">
+		<el-tabs type="card">
 		    <el-tab-pane label="论文" name="thesis">
 		    	<thesis></thesis>
 		    </el-tab-pane>
