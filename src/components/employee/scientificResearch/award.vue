@@ -342,7 +342,6 @@ import msgDialog from '../../common/msgDialog'
 			//当点击某行时，触发本方法，获取当前行的所有信息
 			getCurrentRow(currentRow){
 				this.currentRow=currentRow
-				this.changeEditForm()
 			},
 			changeEditForm(){
 				this.editForm.awardsRank=this.currentRow.awardsRank.id
@@ -363,7 +362,6 @@ import msgDialog from '../../common/msgDialog'
 			//修改框点击取消时触发本方法
 			cancelEdit(){
 				this.editDialogVisible=false
-				this.changeEditForm()
 
 			},
 			//增加框点击保存时执行本方法
@@ -433,6 +431,7 @@ import msgDialog from '../../common/msgDialog'
 			},
 			editJudge(){
 				if(this.currentRow!=''){
+					this.changeEditForm()
 					this.editDialogVisible=true
 				}else{
 					this.$refs.msgDialog.confirm("请先选择一行")
