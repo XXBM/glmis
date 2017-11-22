@@ -7,7 +7,9 @@
 		    <el-tab-pane label="获奖" name="award">
 		    	<award></award>
 		    </el-tab-pane>
-		    <el-tab-pane label="专著" name="monograph">专著</el-tab-pane>
+		    <el-tab-pane label="专著" name="monograph">
+		    	<monograph></monograph>
+		    </el-tab-pane>
 		    <el-tab-pane label="教材" name="teachingMaterial">
 		    	<teaching-material></teaching-material>
 		    </el-tab-pane>
@@ -25,6 +27,7 @@ import teachingMaterial from './teachingMaterial.vue'
 import infeedProject from './infeedProject.vue'
 import lengwaysProject from './lengwaysProject.vue'
 import thesis from './thesis'
+import monograph from './monograph'
 import award from './award'
 	export default{
 		components:{
@@ -32,6 +35,7 @@ import award from './award'
 			infeedProject,
 			lengwaysProject,
 			thesis,
+			monograph,
 			award
 		}
 	}
