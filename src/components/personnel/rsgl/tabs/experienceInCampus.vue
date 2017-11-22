@@ -36,12 +36,15 @@
 		    <el-pagination
 		      @current-change="handleCurrentChange"
 		      @size-change="handlePageSizeChange"
-		      layout="total, prev, pager, next, jumper"
+		      :current-page="page"
+		      :page-sizes="[5, 10, 15, 20]"
+		      :page-size="pageSize"
+		      layout="total, sizes, prev, pager, next, jumper"
 		      :total="tableDataTotal">
 		  	</el-pagination>
 		</el-row>
-		<el-dialog title="增加" v-model="this.showAddDialog">
-			<el-form :model="addData">
+		<el-dialog title="增加" v-model="showAddDialog">
+			<el-form :model="addData" :rules="rules" ref="ruleAdd">
 				<el-form-item
 				 prop="startTime"
 			     label="开始时间">
@@ -50,7 +53,7 @@
 				      align="right"
 				      type="date"
 				      placeholder="选择日期"
-				      :picker-options="pickerOptions1">
+				      :picker-options="pickerOptions">
 				  	</el-date-picker>
 				</el-form-item>
 				<el-form-item
@@ -61,7 +64,7 @@
 				      align="right"
 				      type="date"
 				      placeholder="选择日期"
-				      :picker-options="pickerOptions1">
+				      :picker-options="pickerOptions">
 				  	</el-date-picker>
 				</el-form-item>
 				<el-form-item
@@ -93,7 +96,7 @@
 				label="级别">
 					<el-select v-model="addData.positionRank" placeholder="请选择">
 					    <el-option
-					      v-for="item in this.allPositionRank"
+					      v-for="item in allPositionRank"
 					      :key="item.id"
 					      :label="item.description"
 					      :value="item.id">
@@ -101,11 +104,11 @@
 					</el-select>
 				</el-form-item>
 			</el-form>
-			<el-button @click="saveAdd">提交</el-button>
+			<el-button @click="saveAdd('ruleAdd')">提交</el-button>
 			<el-button @click="cancelAdd">取消</el-button>
 		</el-dialog>
-		<el-dialog title="修改" v-model="this.showEditDialog">
-			<el-form :model="editData">
+		<el-dialog title="修改" v-model="showEditDialog">
+			<el-form :model="editData" :rules="rules" ref="ruleEdit">
 				<el-form-item
 				 prop="startTime"
 			     label="开始时间">
@@ -114,7 +117,7 @@
 				      align="right"
 				      type="date"
 				      placeholder="选择日期"
-				      :picker-options="pickerOptions1">
+				      :picker-options="pickerOptions">
 				  	</el-date-picker>
 				</el-form-item>
 				<el-form-item
@@ -125,7 +128,7 @@
 				      align="right"
 				      type="date"
 				      placeholder="选择日期"
-				      :picker-options="pickerOptions1">
+				      :picker-options="pickerOptions">
 				  	</el-date-picker>
 				</el-form-item>
 				<el-form-item
@@ -133,7 +136,7 @@
 				label="学院">
 					<el-select v-model="editData.school" placeholder="请选择">
 					    <el-option
-					      v-for="item in this.allSchool"
+					      v-for="item in allSchool"
 					      :key="item.id"
 					      :label="item.schoolName"
 					      :value="item.id">
@@ -145,7 +148,7 @@
 				label="担任职务">
 					<el-select v-model="editData.post" placeholder="请选择">
 					    <el-option
-					      v-for="item in this.allPost"
+					      v-for="item in allPost"
 					      :key="item.id"
 					      :label="item.description"
 					      :value="item.id">
@@ -157,7 +160,7 @@
 				label="级别">
 					<el-select v-model="editData.positionRank" placeholder="请选择">
 					    <el-option
-					      v-for="item in this.allPositionRank"
+					      v-for="item in allPositionRank"
 					      :key="item.id"
 					      :label="item.description"
 					      :value="item.id">
@@ -165,19 +168,22 @@
 					</el-select>
 				</el-form-item>
 			</el-form>
-			<el-button @click="saveEdit">提交</el-button>
+			<el-button @click="saveEdit('ruleEdit')">提交</el-button>
 			<el-button @click="cancelEdit">取消</el-button>
 		</el-dialog>
+		<msgDialog ref="msgDialog"></msgDialog>
 	</div>
 </template>
 <script type="text/javascript">
 import moment from 'moment'
+import msgDialog from '../../../../components/common/msgDialog'
 export default{
 	data(){
 		return{
 			tableData:'',
 			tableDataTotal:'',
 			currentRow:'',
+			currentRowId:'',
 			page:1,
 			pageSize:10,
 			allSchool:'',
@@ -200,6 +206,37 @@ export default{
 				post:'',
 				positionRank:'',
 			},
+			pickerOptions: {
+				// disabledDate(time) {
+    //                 return time.getTime() > Date.now();
+    //             },
+	          	//快捷键
+	         	shortcuts: [{
+	            	text: '今天',
+	            	onClick(picker) {
+	             		picker.$emit('pick', new Date());
+	            	}
+	          	}, {
+	            	text: '昨天',
+	            	onClick(picker) {
+	              		const date = new Date();
+	              		date.setTime(date.getTime() - 3600 * 1000 * 24);
+	              		picker.$emit('pick', date);
+	            	}
+	          	}, {
+	            	text: '一周前',
+	            	onClick(picker) {
+	              		const date = new Date();
+	              		date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+	              		picker.$emit('pick', date);
+	            	}
+	          	}]
+		    },
+			rules: {
+	          	school: [{ required: true, type:'number', message: '必填项', trigger: 'blur'&'change'  }],
+	          	post: [{ required: true,type:'number', message: '必填项', trigger: 'blur'&'change'  }],
+	          	positionRank:[{ required: true,type:'number', message: '必填项', trigger: 'blur'&'change'}]
+		    }
 		}
 	},
 	props:{
@@ -208,21 +245,19 @@ export default{
 			required:true
 		}
 	},
-	created:function(){
-		this.getAllTableData()
-	},
 	methods:{
 		getAllTableData:function(){
-			// alert(this.experienceInCampusUrl)
-			this.$http.get(this.experienceInCampusUrl).then(response=>{
+			var url = this.experienceInCampusUrl+"&page="+this.page+"&rows="+this.pageSize
+			this.$http.get(url).then(response=>{
 				this.tableDataTotal=response.data.total
 				this.tableData=response.data.rows
 			}).catch(response=>{
-				// alert("在校工作经历获取数据失败！")
+				this.$refs.msgDialog.confirm("在校工作经历获取数据失败！")
 			})
 		},
 		handleRowClick:function(val){
 			this.currentRow=val
+			this.currentRowId=val.id
 		},
 		getAllSchool:function(){
 			var url =this.HOST+'/findAllSchoolName'
@@ -248,99 +283,126 @@ export default{
 			this.getAllPost()
 			this.getAllPositionRank()
 		},
-		saveAdd:function(){
-			var startTime_add=moment(this.addData.startTime).format("YYYY-MM-DD")
-			var endTime_add=moment(this.addData.endTime).format("YYYY-MM-DD")
-			this.addData.startTime=startTime_add
-			this.addData.endTime=endTime_add
-			var url= this.HOST+'/addEmploymentRecord'
-			this.$http.post(url,this.addData).then(response=>{
-				this.showAddDialog=false
-				this.addData.startTime=''
-				this.addData.endTime=''
-				this.addData.school=''
-				this.addData.post=''
-				this.addData.positionRank=''
-				this.getAllTableData()
-				alert("增加成功！")
-			}).catch(response=>{
-				alert("增加失败！")
+		saveAdd:function(ruleForm){
+			this.$refs[ruleForm].validate((valid)=>{
+				if (valid) {
+					var startTime_add=moment(this.addData.startTime).format("YYYY-MM-DD")
+					var endTime_add=moment(this.addData.endTime).format("YYYY-MM-DD")
+					this.addData.startTime=startTime_add
+					this.addData.endTime=endTime_add
+					var url= this.HOST+'/addEmploymentRecord'
+					this.$http.post(url,this.addData).then(response=>{
+						this.getAllTableData()
+						this.showAddDialog=false
+						this.addData={
+							startTime:'',
+							endTime:'',
+							school:'',
+							post:'',
+							positionRank:'',
+						}	
+						this.$refs.msgDialog.confirm("成功增加一条数据！")
+					}).catch(response=>{
+						this.$refs.msgDialog.notify("增加数据失败！")
+					})
+				}else{
+					this.$refs.msgDialog.confirm("请检查填写的信息！")
+				}
 			})
+			
 		},
 		cancelAdd:function(){
-			this.addData.startTime=''
-			this.addData.endTime=''
-			this.addData.school=''
-			this.addData.post=''
-			this.addData.positionRank=''
+			this.addData={
+				startTime:'',
+				endTime:'',
+				school:'',
+				post:'',
+				positionRank:'',
+			}	
 			this.showAddDialog=false
 		},
 		edit:function(){
 			if (this.currentRow) {
-				// this.editData.id=this.currentRow.id
+				this.editData.id=this.currentRow.id
 				this.editData.startTime=this.currentRow.startTime
 				this.editData.endTime=this.currentRow.endTime
-				this.editData.school=this.currentRow.school
-				this.editData.post=this.currentRow.post
-				this.editData.positionRank=this.currentRow.positionRank
+				this.editData.school=this.currentRow.school.id
+				this.editData.post=this.currentRow.post.id
+				this.editData.positionRank=this.currentRow.positionRank.id
 				this.showEditDialog=true
 				this.getAllSchool()
 				this.getAllPost()
 				this.getAllPositionRank()
 			}else{
-				alert("请选择要修改的行！")
+				this.$refs.msgDialog.confirm("请选择要修改的行！")
 			}
 			
 		},
-		saveEdit:function(){
-			var startTime_edit=moment(this.editData.startTime).format("YYYY-MM-DD")
-			var endTime_edit=moment(this.editData.endTime).format("YYYY-MM-DD")
-			this.currentRow.startTime=startTime_edit
-			this.currentRow.endTime=endTime_edit
-			this.currentRow.school=this.editData.school
-			this.currentRow.post=this.editData.post
-			this.currentRow.positionRank=this.editData.positionRank
-			var url= this.HOST+'/updateEmploymentRecord'
-			console.log(JSON.stringify(this.currentRow))
-			this.$http.put(url,this.currentRow).then(response=>{
-				this.showEditDialog=false
-				this.editData.id=''
-				this.editData.startTime=''
-				this.editData.endTime=''
-				this.editData.school=''
-				this.editData.post=''
-				this.editData.positionRank=''
-				this.getAllTableData()
-				alert("修改成功！")
-			}).catch(response=>{
-				alert("修改失败！")
+		saveEdit:function(ruleForm){
+			this.$refs[ruleForm].validate((valid)=>{
+				if (valid) {
+					var startTime_edit=moment(this.editData.startTime).format("YYYY-MM-DD")
+					var endTime_edit=moment(this.editData.endTime).format("YYYY-MM-DD")
+					this.currentRow.id=this.editData.id
+					this.currentRow.startTime=startTime_edit
+					this.currentRow.endTime=endTime_edit
+					this.currentRow.school=this.editData.school
+					this.currentRow.post=this.editData.post
+					this.currentRow.positionRank=this.editData.positionRank
+					var url= this.HOST+'/updateEmploymentRecord'
+					this.$http.put(url,this.currentRow).then(response=>{
+						this.showEditDialog=false
+						this.getAllTableData()
+						this.$refs.msgDialog.notify("修改数据成功！")
+					}).catch(response=>{
+						this.$refs.msgDialog.confirm("修改数据失败！")
+					})
+				}else{
+					this.$refs.msgDialog.confirm("请检查填写的信息！")
+				}
 			})
+			
 		},
 		cancelEdit:function(){
-			this.editData.startTime=''
-			this.editData.endTime=''
-			this.editData.school=''
-			this.editData.post=''
-			this.editData.positionRank=''
 			this.showEditDialog=false
 		},
 		remove:function(){
-			if (this.currentRow) {
-				var url = this.HOST+'/deleteEmploymentRecord?id='+this.currentRow.id
-				this.$http.delete(url).then(response=>{
-					alert("删除成功！")
-					this.getAllTableData()
-				}).catch(response=>{
-					alert("删除失败！")
-				})
-			}
+			if (this.currentRowId=='') {
+				this.$refs.msgDialog.confirm("请选择要删除的行！")
+			}else{
+				this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+			          confirmButtonText: '确定',
+			          cancelButtonText: '取消',
+			          type: 'warning'
+			        }).then(() => {
+			          var url =this.HOST+'/deleteEmploymentRecord?id='+this.currentRowId
+			          this.$http.delete(url).then(response=>{
+			          	this.getAllTableData()
+			          	this.$refs.msgDialog.notify("成功删除一条数据!")
+			          }).catch(response=>{
+			          	this.$refs.msgDialog.notify("删除失败！")
+			          })
+			        }).catch(() => {
+			          	this.$refs.msgDialog.notify("已取消删除！")       
+		    	})
+			}		
+		},
+		handleCurrentChange:function(val){
+			this.page=val
+			this.getAllTableData()
+		},
+		handlePageSizeChange:function(val){
+			this.pageSize=val
+			this.getAllTableData()
 		}
-
 	},
 	watch:{
 		experienceInCampusUrl:function(){
 			this.getAllTableData()
 		}
+	},
+	components:{
+		msgDialog,
 	}
 }
 </script>
