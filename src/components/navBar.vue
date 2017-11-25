@@ -18,7 +18,7 @@
             </el-submenu>
           </template>
         </el-menu>
-    </div>
+</div>
 </template>
 <script>
 export default {
