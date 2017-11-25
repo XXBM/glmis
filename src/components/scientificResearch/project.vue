@@ -205,8 +205,6 @@ import msgDialog from '../common/msgDialog'
 			msgDialog
 		},
 		methods:{
-<<<<<<< HEAD
-<<<<<<< HEAD
 			// 定义页面切换时触发的方法，当页面切换时触发该方法，先将改变后的页面变为当前页，然后进行判断，若是查询状态下，则先让当前页为1，再进行查询，否则正常查询
 			changeCurrentPage(current){
 				this.currentPage=current
@@ -221,17 +219,15 @@ import msgDialog from '../common/msgDialog'
 				// 定义url用来存放获取所有项目信息的地址
 				var projectUrl = this.HOST + this.url+"&page="+this.currentPage+"&rows="+this.pageSize
 				// 访问后台，获取所有的项目信息
-=======
+			},
 			inquiry(){
 				var url = this.HOST + ""
 			},
 			handleCurrentChange(){
 				var projectUrl = this.HOST + this.url+"&page=1&rows=9"
->>>>>>> ac81e51c72cf09facd632e554d45d289c65f735b
-=======
+			},
 			handleCurrentChange(){
 				var projectUrl = this.HOST + this.url+"&page=1&rows=9"
->>>>>>> 2d27e0be23445340cbfb3ba4fa525f02fe40faa1
 				this.$http.get(projectUrl).then(response=>{
 					this.tableData = response.data.rows
 					this.total = response.data.total

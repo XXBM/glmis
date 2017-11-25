@@ -236,6 +236,7 @@ import msgDialog from '../common/msgDialog'
 			},
 			handleCurrentChange(){
 				var projectUrl = this.HOST + this.url+"&page=1&rows=9"
+			},
 			// 定义页面切换时触发的方法，当页面切换时触发该方法，先将改变后的页面变为当前页，然后进行判断，若是查询状态下，则先让当前页为1，再进行查询，否则正常查询
 			changeCurrentPage(current){
 				this.currentPage=current
@@ -249,7 +250,6 @@ import msgDialog from '../common/msgDialog'
 				// 定义url用来存放获取所有项目信息的地址
 				var projectUrl = this.HOST + this.url+"&page="+this.currentPage+"&rows="+this.pageSize
 				// 访问后台，获取所有的项目信息
->>>>>>> 2d27e0be23445340cbfb3ba4fa525f02fe40faa1
 				this.$http.get(projectUrl).then(response=>{
 					this.tableData = response.data.rows
 					this.total = response.data.total
@@ -261,14 +261,11 @@ import msgDialog from '../common/msgDialog'
 			saveCheckStatus(){
 				// 令当前行中的审核状态的id为选择的审核状态的id
 				this.currentRow.checkingStatus.id=this.checkingStatusId
-<<<<<<< HEAD
 				var url = this.HOST + '/updateProjectFundedByGovernment'
 				var url = this.HOST + '/updateProjectFundedByPrivateSector'
-=======
 				// 定义变量用来存放修改当前行信息的地址
 				var url = this.HOST + '/updateProjectFundedByGovernment'
 				// 访问后台，并将当前行的所有信息作为对象传给后台
->>>>>>> 2d27e0be23445340cbfb3ba4fa525f02fe40faa1
 				this.$http.put(url,this.currentRow).then(response=>{
 					this.$refs.msgDialog.notify("修改成功")
 					this.findProject()

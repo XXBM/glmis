@@ -62,9 +62,6 @@ import thesis from './thesis'
 			}
 		},
 		methods:{
-<<<<<<< HEAD
-			
-=======
 			handleClick(tab){
 				if(tab.name=="project"){
 					this.projectUrl="/displayProjectFundedByPrivateSectorByEmp?id="+this.materialForWorker
@@ -80,7 +77,6 @@ import thesis from './thesis'
 					this.monographUrl="/displayMonographByEmp?id="+this.materialForWorker
 				}
 			}
->>>>>>> ac81e51c72cf09facd632e554d45d289c65f735b
 		},
 		components:{
 			project,
