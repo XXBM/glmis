@@ -8,7 +8,7 @@ import attendanceManager from '../components/attendance/attendanceManager/attend
 import myScientificResearch from '../components/employee/scientificResearch/myScientificResearch'
 // rscx
 import employeeInformation from '../components/personnel/rsgl/employeeInformation'
-
+import tjcx from '../components/personnel/tjcx/tjcx'
 Vue.use(Router)
 
 export default new Router({
@@ -21,7 +21,7 @@ export default new Router({
     	{
         path: '/tjcx',
         name: '统计查询',
-        component: homePage
+        component: tjcx
     	},
     	{
         path: '/attendanceManager',
