@@ -97,6 +97,14 @@
 	        style="width:11%">
 	      </el-table-column>
 	    </el-table>
+	    <el-pagination 
+	    @size-change="handleSizeChange"
+	    @current-change="handleCurrentChange"
+	    :current-page="currentPage"
+	    :page-sizes="[5,10,15]"
+	    :page-size="pageSize"
+	    layout="total,sizes,prev,pager,next,jumper"
+	    :total="total"></el-pagination>
 	    <msg-dialog ref="msgDialog"></msg-dialog>
 	    <el-dialog
 		  title="添加"
@@ -243,6 +251,9 @@ import msgDialog from '../../common/msgDialog'
 		data(){
 			return{
 				tableData:[],
+				total:0,
+				pageSize:5,
+				currentPage:1,
 				//控制添加对话框的显示
 				isAddDialogVisible:false,
 				isEditDialogVisible:false,
@@ -306,10 +317,19 @@ import msgDialog from '../../common/msgDialog'
 			}
 		},
 		methods:{
+			handleCurrentChange(newPage){
+				this.currentPage=newPage
+				this.findThesis()
+			},
+			handleSizeChange(newPageSize){
+				this.pageSize=newPageSize
+				this.findThesis()
+			},
 			findThesis(){
-				var url=this.HOST + "/displayOwnThesis?page=1&rows=9"
+				var url=this.HOST + "/displayOwnThesis?page="+this.currentPage+"&rows="+this.pageSize
 				this.$http.get(url).then(response=>{
 					this.tableData=response.data.rows
+					this.total=response.data.total
 				}).catch(errors=>{
 					this.$refs.msgDialog.confirm("查询失败")
 				})

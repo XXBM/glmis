@@ -1,12 +1,20 @@
 <template>
 	<div>
+<<<<<<< HEAD
 		<el-tabs type="card" @tab-click="handleClick">
 		    <el-tab-pane label="论文" name="thesis">论文</el-tab-pane>
+=======
+		<el-tabs type="card">
+>>>>>>> 2d27e0be23445340cbfb3ba4fa525f02fe40faa1
 		    <el-tab-pane label="论文" name="thesis">
 		    	<thesis></thesis>
 		    </el-tab-pane>
-		    <el-tab-pane label="获奖" name="award">获奖</el-tab-pane>
-		    <el-tab-pane label="专著" name="monograph">专著</el-tab-pane>
+		    <el-tab-pane label="获奖" name="award">
+		    	<award></award>
+		    </el-tab-pane>
+		    <el-tab-pane label="专著" name="monograph">
+		    	<monograph></monograph>
+		    </el-tab-pane>
 		    <el-tab-pane label="教材" name="teachingMaterial">
 		    	<teaching-material></teaching-material>
 		    </el-tab-pane>
@@ -23,6 +31,12 @@
 import teachingMaterial from './teachingMaterial.vue'
 import infeedProject from './infeedProject.vue'
 import lengwaysProject from './lengwaysProject.vue'
+<<<<<<< HEAD
+=======
+import thesis from './thesis'
+import monograph from './monograph'
+import award from './award'
+>>>>>>> 2d27e0be23445340cbfb3ba4fa525f02fe40faa1
 	export default{
 		data(){
 			return{
@@ -52,7 +66,9 @@ import lengwaysProject from './lengwaysProject.vue'
 			teachingMaterial,
 			infeedProject,
 			lengwaysProject,
-			thesis
+			thesis,
+			monograph,
+			award
 		}
 	}
 
