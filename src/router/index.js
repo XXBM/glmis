@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+//kqgl
+import attendanceExportExcel from '../components/attendance/attendanceExportExcel.vue'
 //For router-use
 import homePage from '../components/homePage.vue'
 import scientificInfo from '../components/scientificResearch/scientificInformation'
@@ -36,7 +37,7 @@ export default new Router({
     	{
         path: '/attendanceExportExcel',
         name: '生成人事处报表',
-        component: homePage
+        component: attendanceExportExcel
     	},
     	{
         path: '/scientificResearch',
