@@ -288,7 +288,7 @@ import msgDialog from '../../common/msgDialog'
                 this.endBirth = this.moment(this.bornDate[(this.bornDate.length)-1]).format('YYYY-MM-DD')
 
                 console.log(JSON.stringify(this.conditionForm))
-                this.$http.post(this.HOST + "/searchEmployeeBySpecification?page=1&rows=9",this.conditionForm).then(response=>{
+                this.$http.post(this.HOST + "/searchEmployee?page="+this.currentPage+"&rows="+this.pageSize,this.conditionForm).then(response=>{
                 	this.totalNum = response.data.total
 		        	this.tableData = response.data.rows
 		        }).catch(errors=>{
