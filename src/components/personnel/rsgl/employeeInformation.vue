@@ -58,13 +58,13 @@
 					奖励记录
 				</el-tab-pane>
 				<el-tab-pane label="校内工作经历" name="experienceInCampus">
-					校内工作经历
+					<experience-in-campus :experienceInCampusUrl="experienceInCampusUrl"></experience-in-campus>
 				</el-tab-pane>
 				<el-tab-pane label="职位变更" name="jobChange">
-					职位变更
+					<job-change :jobChangeUrl="jobChangeUrl"></job-change>
 				</el-tab-pane>
 				<el-tab-pane label="学术会议" name="degreeMeeting">
-					学术会议
+					<degreeMeeting :degreeMeetingUrl="degreeMeetingUrl"></degreeMeeting>
 				</el-tab-pane>
 				<el-tab-pane label="国内外访学记录" name="visitingAcademics">
 					<visiting-academic :url="visitingAcademicsUrl"></visiting-academic>
@@ -78,6 +78,9 @@
 </template>
 <script type="text/javascript">
 import visitingAcademic from './tabs/visitingAcademic'
+import experienceInCampus from './tabs/experienceInCampus'
+import jobChange from './tabs/jobChange'
+import degreeMeeting from './tabs/degreeMeeting'
 	export default{
 		data(){
 			return{
@@ -151,9 +154,9 @@ import visitingAcademic from './tabs/visitingAcademic'
 				this.educationalBackgroundUrl=""
 				this.practicingRequirementsUrl=""
 				this.rewardUrl=""
-				this.experienceInCampusUrl=""
-				this.jobChangeUrl=""
-				this.degreeMeetingUrl=""
+				this.experienceInCampusUrl=this.HOST+"/displayRecByEmp?id="+currentRow.id
+				this.jobChangeUrl=this.HOST+"/displayPostByEmp?id="+currentRow.id
+				this.degreeMeetingUrl=this.HOST+"/displayAcademicConferenceById?id="+currentRow.id
 				this.visitingAcademicsUrl="/displayStuByEmp?id="+currentRow.id
 				this.previousWorkExperiencesUrl=""
 			}
@@ -169,6 +172,9 @@ import visitingAcademic from './tabs/visitingAcademic'
 		},
 		components:{
 			visitingAcademic,
+			experienceInCampus,
+			jobChange,
+			degreeMeeting,
 		}
 		
 	}

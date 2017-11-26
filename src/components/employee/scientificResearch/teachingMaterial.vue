@@ -310,6 +310,17 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 						this.addData.publicationTime=moment(time).format("YYYY-MM-DD")
 						this.$http.post(url,this.addData).then(response=>{
 							this.getAllTableData()
+							this.addData={
+								name:'',		     	
+								editor:'',
+								press:'',
+								publicationTime:'',
+								words:'',
+								textbookRank:'',
+								isbn:'',	      	
+								seating:'',
+								numOfParticipants:''
+							}
 							this.showAddDialog=false
 							this.$refs.msgDialog.notify("成功添加教科书！")
 						}).catch(response=>{
@@ -322,7 +333,17 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 				
 			},
 			cancelAdd:function(){
-				this.addData={}
+				this.addData={
+					name:'',		     	
+					editor:'',
+					press:'',
+					publicationTime:'',
+					words:'',
+					textbookRank:'',
+					isbn:'',	      	
+					seating:'',
+					numOfParticipants:''
+				}
 				this.showAddDialog=false
 			},
 			edit:function(){
@@ -337,7 +358,7 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 					this.editData.press=this.currentRow.press,
 					this.editData.publicationTime=this.currentRow.publicationTime
 					this.editData.words=this.currentRow.words
-					this.editData.textbookRank=this.currentRow.textbookRank
+					this.editData.textbookRank=this.currentRow.textbookRank.id
 					this.editData.isbn=this.currentRow.isbn
 					this.editData.seating=this.currentRow.seating
 					this.editData.numOfParticipants=this.currentRow.numOfParticipants
@@ -348,7 +369,6 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 					if (valid) {
 						var url=this.HOST+'/updateTextbook'
 						var time =this.editData.publicationTime
-
 						this.editData.publicationTime=moment(time).format("YYYY-MM-DD")
 						this.currentRow.id=this.editData.id
 						this.currentRow.name=this.editData.name		     	
@@ -374,7 +394,6 @@ import msgDialog from '../../../components/common/msgDialog.vue'
 				
 			},
 			cancelEdit:function(){
-				this.editData={}
 				this.showEditDialog=false
 			},
 			remove:function(){
