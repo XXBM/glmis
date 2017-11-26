@@ -6,6 +6,7 @@ import attendanceExportExcel from '../components/attendance/attendanceExportExce
 import homePage from '../components/homePage.vue'
 import scientificInfo from '../components/scientificResearch/scientificInformation'
 import attendanceManager from '../components/attendance/attendanceManager/attendanceManager'
+import leaveManager from '../components/attendance/attendanceManager/leaveManager'
 import myScientificResearch from '../components/employee/scientificResearch/myScientificResearch'
 // rscx
 import employeeInformation from '../components/personnel/rsgl/employeeInformation'
@@ -82,7 +83,7 @@ export default new Router({
         {
         path: '/leaveManager',
         name: '请假管理',
-        component: homePage
+        component: leaveManager
         }
     ]
 })
