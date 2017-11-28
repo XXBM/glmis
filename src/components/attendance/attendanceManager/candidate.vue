@@ -1,0 +1,95 @@
+<template>
+	<div>
+		<el-table 
+		:data="tableData"
+		style="width:100%"
+		border
+		highlight-current-row
+		@row-click="getCurrentRow">
+			<el-table-column
+			prop='name'
+			label="姓名"
+			align="center"></el-table-column>
+			<el-table-column
+			prop="no"
+			label="工号"
+			align="center"></el-table-column>
+		</el-table>
+		<el-pagination 
+		@size-change="handleSizeChange"
+		@current-change="handleCurrentChange"
+		:current-page="currentPage"
+		:page-sizes="[5,10,15]"
+		:page-size="pageSize"
+		layout="total,sizes,prev,pager,next,jumper"
+		:total="total"></el-pagination>
+		<el-table 
+			 :data="statusData"
+			 border
+			 style="width:100%"
+			 highlight-current-row
+			 >
+			 	<el-table-column 
+			 	 prop="presenceDescription.description"
+			 	 label="考勤状态"
+			 	 align="center"
+			 	></el-table-column>
+			 </el-table>
+		<msg-dialog ref="msgDialog"></msg-dialog>
+	</div>
+</template>
+<script type="text/javascript">
+import msgDialog from '../../common/msgDialog'
+	export default{
+		data(){
+			return{
+				tableData:[],
+				total:0,
+				currentPage:1,
+				pageSize:10,
+				currentRow:'',
+				statusData:''
+			}
+		},
+		props:['candidateUrl','summaryId'],
+		watch:{
+			candidateUrl:function(){
+				this.findAllCandidate()
+			}
+		},
+		methods:{
+			findAllCandidate(){
+				var url = this.candidateUrl+"&page="+this.currentPage+"&rows="+this.pageSize
+				this.$http.get(url).then(response=>{
+					this.tableData=response.data.rows
+					this.total=response.data.total
+				}).catch(errors=>{
+					this.$refs.msgDialog.confirm("查询失败")
+				})
+			},
+			handleCurrentChange(newPage){
+				this.currentPage=newPage
+				this.findAllCandidate()
+			},
+			handleSizeChange(newPageSize){
+				this.pageSize=newPageSize
+				this.findAllCandidate()
+			},
+			getCurrentRow(currentRow){
+				this.currentRow=currentRow
+				this.findStatus()
+			},
+			findStatus(){
+				var url = this.HOST + "/displayAttByCan?candidateId="+this.currentRow.id+"&;summaryId="+this.summaryId+"&page=1&rows=10"
+				this.$http.get(url).then(response=>{
+					this.statusData=response.data.rows
+				}).catch(errors=>{
+					this.$refs.msgDialog.confirm("获取失败")
+				})
+			}
+		},
+		components:{
+			msgDialog
+		}
+	}
+</script>
