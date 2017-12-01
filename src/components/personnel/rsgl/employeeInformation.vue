@@ -46,10 +46,10 @@
 					学位
 				</el-tab-pane>
 				<el-tab-pane label="职称记录" name="employeeAssProfessionalTitles">
-					职称记录
+					<professionTitle :url="employeeAssProfessionalTitlesUrl"></professionTitle>
 				</el-tab-pane>
 				<el-tab-pane label="学历" name="educationalBackground">
-					学历
+					<educationalBackground :url="educationalBackgroundUrl"></educationalBackground>
 				</el-tab-pane>
 				<el-tab-pane label="执业资格" name="practicingRequirements ">
 					执业资格
@@ -58,13 +58,13 @@
 					奖励记录
 				</el-tab-pane>
 				<el-tab-pane label="校内工作经历" name="experienceInCampus">
-					<experience-in-campus :experienceInCampusUrl="experienceInCampusUrl"></experience-in-campus>
+					校内工作经历
 				</el-tab-pane>
 				<el-tab-pane label="职位变更" name="jobChange">
-					<job-change :jobChangeUrl="jobChangeUrl"></job-change>
+					职位变更
 				</el-tab-pane>
 				<el-tab-pane label="学术会议" name="degreeMeeting">
-					<degreeMeeting :degreeMeetingUrl="degreeMeetingUrl"></degreeMeeting>
+					学术会议
 				</el-tab-pane>
 				<el-tab-pane label="国内外访学记录" name="visitingAcademics">
 					<visiting-academic :url="visitingAcademicsUrl"></visiting-academic>
@@ -78,9 +78,8 @@
 </template>
 <script type="text/javascript">
 import visitingAcademic from './tabs/visitingAcademic'
-import experienceInCampus from './tabs/experienceInCampus'
-import jobChange from './tabs/jobChange'
-import degreeMeeting from './tabs/degreeMeeting'
+import professionTitle from './tabs/employeeAssProfessionalTitles'
+import educationalBackground from './tabs/educationalBackground'
 	export default{
 		data(){
 			return{
@@ -150,13 +149,13 @@ import degreeMeeting from './tabs/degreeMeeting'
 			currentRow(currentRow){
 				this.personneInformationUrl=""
 				this.degreeUrl=""
-				this.employeeAssProfessionalTitlesUrl=""
-				this.educationalBackgroundUrl=""
+				this.employeeAssProfessionalTitlesUrl="/displayNameByEmp?id="+currentRow.id
+				this.educationalBackgroundUrl="//displayEduByEmp?id="+currentRow.id
 				this.practicingRequirementsUrl=""
 				this.rewardUrl=""
-				this.experienceInCampusUrl=this.HOST+"/displayRecByEmp?id="+currentRow.id
-				this.jobChangeUrl=this.HOST+"/displayPostByEmp?id="+currentRow.id
-				this.degreeMeetingUrl=this.HOST+"/displayAcademicConferenceById?id="+currentRow.id
+				this.experienceInCampusUrl=""
+				this.jobChangeUrl=""
+				this.degreeMeetingUrl=""
 				this.visitingAcademicsUrl="/displayStuByEmp?id="+currentRow.id
 				this.previousWorkExperiencesUrl=""
 			}
@@ -172,9 +171,8 @@ import degreeMeeting from './tabs/degreeMeeting'
 		},
 		components:{
 			visitingAcademic,
-			experienceInCampus,
-			jobChange,
-			degreeMeeting,
+			educationalBackground,
+			professionTitle
 		}
 		
 	}

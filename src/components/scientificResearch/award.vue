@@ -164,7 +164,9 @@ import msgDialog from '../common/msgDialog'
 				// 用于保存当前行的信息
 				currentRow:'',
 				// 判断是否有选中的行
-				awardId:''
+				awardId:'',
+				startTime:'',
+				endTime:''
 
 			}
 		},
@@ -225,9 +227,11 @@ import msgDialog from '../common/msgDialog'
 			},
 			// 查询方法
 			onSubmit(){
-				var startTime = this.moment(this.dateOfAward[0]).format('YYYY-MM-DD')
-                var endTime = this.moment(this.dateOfAward[(this.dateOfAward.length)-1]).format('YYYY-MM-DD')
-				var url = this.HOST + '/dispAwardsSpecification?awardsRankIds='+this.awardsRankIds+"&;startTime="+startTime+"&;endTime="+endTime+"&;seating="+this.seating+"&;checkingStatusId="+this.checkingStatusIds+"&page=1&rows=9"
+                if (this.dateOfAward!='') {
+				this.startTime = this.moment(this.dateOfAward[0]).format('YYYY-MM-DD')
+                this.endTime = this.moment(this.dateOfAward[(this.dateOfAward.length)-1]).format('YYYY-MM-DD')
+            	}
+				var url = this.HOST + '/dispAwardsSpecification?awardsRankIds='+this.awardsRankIds+"&;startTime="+this.startTime+"&;endTime="+this.endTime+"&;seating="+this.seating+"&;checkingStatusId="+this.checkingStatusIds+"&page=1&rows=9"
 				this.$http.get(url).then(response=>{
 					this.$refs.msgDialog.notify("查询成功")
 					this.tableData = response.data.rows
